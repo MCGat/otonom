@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTONOM — Hero · Explorez votre site (3D)</title>
+<link rel="stylesheet" href="../styles/otonom.css">
+<style>
+  html,body{height:100%;}
+  .hero{ position:relative; width:1440px; height:820px; overflow:hidden;
+    background:radial-gradient(130% 120% at 60% 8%, #15151a 0%, #0c0c0f 55%, var(--ink-900) 100%); }
+
+  .nav{ position:relative; z-index:40; height:74px; display:flex; align-items:center; justify-content:space-between; padding:0 56px; border-bottom:1px solid var(--line); }
+  .wordmark{ font-family:var(--font-display); font-weight:700; font-size:22px; letter-spacing:0.16em; color:var(--fg); }
+  .wordmark b{ color:var(--lum); }
+  .nav .links{ display:flex; gap:34px; }
+  .nav .links a{ font-size:13.5px; color:var(--fg-soft); text-decoration:none; }
+  .nav .links a:hover{ color:var(--fg); }
+  .nav .right{ display:flex; align-items:center; gap:14px; }
+  .nav .right a.login{ font-size:13.5px; color:var(--fg-soft); text-decoration:none; }
+
+  .stage{ position:absolute; inset:74px 0 0 0; z-index:10; cursor:grab; }
+  .stage:active{ cursor:grabbing; }
+  .stage canvas{ display:block; width:100%; height:100%; }
+  .stage::after{ content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
+    background:linear-gradient(90deg, rgba(12,12,15,0.92) 0%, rgba(12,12,15,0.55) 24%, transparent 46%),
+               radial-gradient(120% 80% at 50% 120%, rgba(12,12,15,0.6), transparent 60%); }
+
+  .copy{ position:absolute; z-index:30; top:122px; left:56px; width:430px; pointer-events:none; }
+  .copy>*{ pointer-events:auto; }
+  .copy .eyebrow{ display:flex; align-items:center; gap:12px; margin-bottom:22px; }
+  .copy .eyebrow .bar{ width:30px; height:1px; background:var(--line-strong); }
+  .copy h1{ font-family:var(--font-display); font-weight:600; font-size:50px; line-height:0.99; letter-spacing:-0.01em; margin:0 0 18px; color:var(--fg); text-wrap:balance; }
+  .copy h1 .lit{ color:var(--lum); }
+  .copy .lede{ margin:0 0 28px; max-width:38ch; }
+  .cta-row{ display:flex; gap:12px; margin-bottom:24px; }
+  .hint{ display:inline-flex; align-items:center; gap:9px; font-family:var(--font-mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--fg-faint); }
+
+  .pinlayer{ position:absolute; inset:74px 0 0 0; z-index:32; pointer-events:none; }
+  .pin{ position:absolute; transform:translate(-50%,-100%); pointer-events:auto; cursor:pointer; will-change:left,top; transition:opacity .25s; }
+  .pin .stalk{ width:1px; height:24px; margin:0 auto; background:linear-gradient(rgba(255,255,255,0.04),rgba(255,255,255,0.65)); }
+  .pin .dot{ width:11px; height:11px; border-radius:50%; background:var(--lum); margin:0 auto;
+    box-shadow:0 0 0 4px rgba(255,255,255,0.09), 0 0 16px rgba(255,255,255,0.55); transition:transform .2s; }
+  .pin .tag{ position:absolute; bottom:32px; left:50%; transform:translateX(-50%); white-space:nowrap;
+    font-family:var(--font-mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--fg-soft);
+    background:rgba(11,11,13,0.74); border:1px solid var(--line-2); padding:4px 9px; border-radius:100px; backdrop-filter:blur(4px); }
+  .pin:hover .dot,.pin.active .dot{ transform:scale(1.3); }
+  .pin:hover .tag,.pin.active .tag{ color:var(--fg); border-color:var(--line-strong); }
+
+  .card-pop{ position:absolute; z-index:34; width:300px; pointer-events:auto;
+    background:linear-gradient(180deg,rgba(21,21,24,0.97),rgba(13,13,15,0.97)); border:1px solid var(--line-2);
+    border-radius:14px; padding:18px; box-shadow:0 30px 80px -30px rgba(0,0,0,0.85); backdrop-filter:blur(10px);
+    opacity:0; transform:translateY(8px) scale(.98); transition:opacity .22s, transform .22s; visibility:hidden; }
+  .card-pop.show{ opacity:1; transform:none; visibility:visible; }
+  .card-pop .poste{ font-family:var(--font-mono); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--fg-dim); margin-bottom:11px; display:flex; align-items:center; gap:8px; }
+  .card-pop .poste .ic{ width:6px; height:6px; border-radius:50%; background:var(--lum); box-shadow:0 0 8px rgba(255,255,255,.7); }
+  .card-pop h3{ font-family:var(--font-display); font-weight:600; font-size:25px; line-height:1.02; margin:0 0 7px; color:var(--fg); }
+  .card-pop .desc{ font-size:13px; color:var(--fg-soft); margin:0 0 14px; line-height:1.45; }
+  .card-pop .row{ display:flex; gap:10px; margin-bottom:14px; }
+  .card-pop .metric{ flex:1; border:1px solid var(--line); border-radius:9px; padding:9px 10px; background:rgba(255,255,255,0.02); }
+  .card-pop .metric .k{ font-size:10px; color:var(--fg-dim); letter-spacing:0.04em; margin-bottom:5px; }
+  .card-pop .metric .v{ font-family:var(--font-mono); font-weight:500; font-size:18px; color:var(--lum); letter-spacing:-0.01em; }
+  .card-pop .metric .v.sm{ font-size:13.5px; color:var(--fg); }
+  .card-pop a.cta{ display:flex; align-items:center; justify-content:space-between; text-decoration:none;
+    font-size:13px; font-weight:500; color:#0a0a0b; background:var(--lum); padding:11px 14px; border-radius:8px; transition:box-shadow .2s; }
+  .card-pop a.cta:hover{ box-shadow:0 0 24px rgba(255,255,255,0.25); }
+
+  .controls{ position:absolute; z-index:33; right:40px; bottom:32px; display:flex; gap:10px; }
+  .ctl{ display:inline-flex; align-items:center; gap:9px; font-family:var(--font-text); font-size:13px; color:var(--fg);
+    background:rgba(20,20,23,0.72); border:1px solid var(--line-2); padding:10px 15px; border-radius:100px; cursor:pointer; backdrop-filter:blur(6px); transition:border-color .2s; }
+  .ctl:hover{ border-color:var(--fg); }
+  .ctl .sw{ width:26px; height:15px; border-radius:100px; border:1px solid var(--line-strong); position:relative; }
+  .ctl .sw::after{ content:""; position:absolute; width:9px; height:9px; border-radius:50%; background:var(--fg-dim); top:2px; left:2px; transition:left .2s, background .2s; }
+  .ctl.on .sw{ border-color:var(--lum); } .ctl.on .sw::after{ left:13px; background:var(--lum); }
+
+  .loading{ position:absolute; inset:74px 0 0 0; z-index:20; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--fg-faint); }
+
+  .reveal{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{ animation:riseY .7s cubic-bezier(.2,.7,.3,1) both; }
+    .reveal.d2{ animation-delay:.08s; } .reveal.d3{ animation-delay:.18s; } .reveal.d4{ animation-delay:.28s; }
+  }
+  @keyframes riseY{ from{ transform:translateY(14px); } to{ transform:none; } }
+</style>
+</head>
+<body>
+<div class="hero" id="hero">
+  <nav class="nav">
+    <div class="wordmark">OTO<b>NOM</b></div>
+    <div class="links"><a href="#">Solutions</a><a href="#">Méthode</a><a href="#">Simulateurs</a><a href="#">Ressources</a></div>
+    <div class="right"><a class="login" href="#">Se connecter</a><a class="btn btn-primary" href="#">Réserver mon audit gratuit <span class="arrow">→</span></a></div>
+  </nav>
+
+  <div class="stage" id="stage"><div class="loading" id="loading">Chargement de la maquette 3D…</div></div>
+  <div class="pinlayer" id="pinlayer"></div>
+
+  <div class="copy">
+    <div class="eyebrow reveal"><span class="bar"></span><span class="eyebrow">Explorez votre site</span></div>
+    <h1 class="reveal d2">Votre site est plein <span class="lit">d'économies cachées</span>.</h1>
+    <p class="lede reveal d3">Toiture, parking, flotte, bâtiment : chaque poste est un levier financier, fiscal ou énergétique. Survolez-les — on s'occupe de tout le reste.</p>
+    <div class="cta-row reveal d4">
+      <a class="btn btn-primary" href="#">Réserver mon audit gratuit <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="#">Simuler mes économies</a>
+    </div>
+    <div class="hint reveal d4">Glissez pour pivoter · survolez les postes</div>
+  </div>
+
+  <div class="card-pop" id="card">
+    <div class="poste"><span class="ic"></span><span id="c-poste">Toiture</span></div>
+    <h3 id="c-title">Solaire &amp; ombrières</h3>
+    <p class="desc" id="c-desc">Texte.</p>
+    <div class="row">
+      <div class="metric"><div class="k" id="c-k1">Économie / an</div><div class="v" id="c-v1">−30%</div></div>
+      <div class="metric"><div class="k" id="c-k2">Impact</div><div class="v sm" id="c-v2">—</div></div>
+    </div>
+    <a class="cta" id="c-cta" href="#">Auditer ce poste <span>→</span></a>
+  </div>
+
+  <div class="controls">
+    <button class="ctl on" id="orbitBtn"><span class="sw"></span>Orbite auto</button>
+    <button class="ctl" id="cutBtn"><span class="sw"></span>Vue éclatée</button>
+  </div>
+</div>
+<div class="grain"></div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script src="three-scene.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTONOM — 3 directions de hero</title>
+<link rel="stylesheet" href="styles/otonom.css">
+<style>
+  html,body{margin:0;height:100%;background:#0c0c0f;}
+  .frame-wrap{ width:1440px; height:820px; background:#0c0c0f; overflow:hidden; position:relative; }
+  .frame-wrap iframe{ width:1440px; height:820px; border:0; display:block; }
+  /* block iframe interaction inside the canvas so drag-to-pan works; focus mode lets you interact */
+  .frame-wrap .veil{ position:absolute; inset:0; z-index:5; cursor:inherit; }
+  .focusable .veil{ display:none; }
+  .note{ font-family:var(--font-text); }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+function HeroFrame({ src }){
+  return (
+    <div className="frame-wrap">
+      <iframe src={src} title={src}></iframe>
+    </div>
+  );
+}
+
+function App(){
+  return (
+    <DesignCanvas>
+      <DCSection id="heroes" title="OTONOM · Page d'accueil — 3 directions de hero"
+        subtitle="Monochrome · orientation lead. Ouvrez une frame en plein écran (icône ⤢) pour interagir : pivoter le bâtiment, survoler les postes, tester les boutons.">
+        <DCArtboard id="site" label="A · Explorez votre site — maquette 3D (recommandé)" width={1440} height={820}>
+          <HeroFrame src="heroes/hero-site.html" />
+        </DCArtboard>
+        <DCArtboard id="orchestration" label="B · Un seul partenaire au lieu de cinq" width={1440} height={820}>
+          <HeroFrame src="heroes/hero-orchestration.html" />
+        </DCArtboard>
+        <DCArtboard id="manifeste" label="C · Manifeste typographique" width={1440} height={820}>
+          <HeroFrame src="heroes/hero-manifeste.html" />
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

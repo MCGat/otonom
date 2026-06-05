@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTONOM — Explorez votre site · vue éclatée</title>
+<link rel="stylesheet" href="../styles/otonom.css">
+<link rel="stylesheet" href="../styles/site-scene.css">
+</head>
+<body>
+<div class="hero2" id="hero">
+
+  <nav class="nav">
+    <div class="wordmark">OTO<b>NOM</b></div>
+    <div class="links">
+      <a href="#">Solutions</a><a href="#">Méthode</a><a href="#">Simulateurs</a><a href="#">Ressources</a>
+    </div>
+    <div class="right">
+      <a class="login" href="#">Se connecter</a>
+      <a class="btn btn-primary" href="#">Réserver mon audit gratuit <span class="arrow">→</span></a>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- 3D stage -->
+  <div class="stage" id="stage">
+    <div class="world exploded" id="world"></div>
+  </div>
+
+  <!-- copy -->
+  <div class="copy">
+    <div class="eyebrow"><span class="bar"></span><span>Explorez votre site</span></div>
+    <h1>Votre site est plein <span class="lit">d'économies cachées</span>.</h1>
+    <p class="lede">On ouvre le bâtiment couche par couche : toiture, technique, plateaux, parking. Cliquez chaque équipement — on chiffre le gain, le financement et les aides.</p>
+    <div class="ticker">
+      <span class="val" id="tickVal">≈ 192 500 €</span><span>d'économies / an identifiées sur ce site type</span>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#">Réserver mon audit gratuit <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="#">Simuler mes économies</a>
+    </div>
+    <div class="hint"><span class="kbd">glissez</span> pour pivoter · cliquez un poste</div>
+  </div>
+
+  <!-- controls -->
+  <div class="controls">
+    <button class="ctl on" id="explodeBtn"><span class="sw"></span>Vue éclatée</button>
+    <button class="ctl" id="rotateBtn"><span class="sw"></span>Rotation auto</button>
+  </div>
+
+  <!-- mobile poste list (filled by JS) -->
+  <div class="mlist" id="mlist"></div>
+
+  <!-- detail panel -->
+  <div class="scrim" id="scrim"></div>
+  <aside class="detail" id="detail">
+    <div class="dhead">
+      <button class="dclose" id="dclose" aria-label="Fermer">✕</button>
+      <div class="dposte"><span class="ic"></span><span id="d-poste">—</span></div>
+      <h3 id="d-title">—</h3>
+      <p class="ddesc" id="d-desc">—</p>
+    </div>
+    <div class="dbody">
+      <div class="hero-metric">
+        <span class="big" id="d-big">—</span>
+        <span class="unit2" id="d-bigunit">€/an</span>
+      </div>
+      <p class="hero-sub" id="d-bigsub">Économie estimée sur ce poste</p>
+      <div class="mgrid" id="d-mgrid"></div>
+      <div class="bars" id="d-bars"></div>
+      <a class="dcta" id="d-cta" href="#">Auditer ce poste <span>→</span></a>
+      <a class="dsecond" href="#">Voir la méthode OTONOM sur ce levier</a>
+    </div>
+  </aside>
+
+</div>
+<div class="grain"></div>
+
+<script src="site-scene.js"></script>
+</body>
+</html>

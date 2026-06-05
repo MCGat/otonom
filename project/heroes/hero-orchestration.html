@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTONOM — Hero · Un seul partenaire</title>
+<link rel="stylesheet" href="../styles/otonom.css">
+<style>
+  html,body{height:100%;}
+  .hero{ position:relative; width:1440px; height:820px; background:var(--ink-900); overflow:hidden; }
+  .hero .vig{ position:absolute; inset:0; background:radial-gradient(90% 70% at 78% 60%, rgba(255,255,255,0.045), transparent 55%); }
+
+  .nav{ position:relative; z-index:6; height:74px; display:flex; align-items:center; justify-content:space-between; padding:0 56px; border-bottom:1px solid var(--line); }
+  .wordmark{ font-family:var(--font-display); font-weight:700; font-size:22px; letter-spacing:0.16em; color:var(--fg); }
+  .wordmark b{ color:var(--lum); }
+  .nav .links{ display:flex; gap:34px; }
+  .nav .links a{ font-size:13.5px; color:var(--fg-soft); text-decoration:none; }
+  .nav .links a:hover{ color:var(--fg); }
+  .nav .right{ display:flex; align-items:center; gap:14px; }
+  .nav .right a.login{ font-size:13.5px; color:var(--fg-soft); text-decoration:none; }
+
+  .head{ position:relative; z-index:4; padding:52px 56px 8px; display:flex; align-items:flex-end; justify-content:space-between; gap:40px; }
+  .head .eyebrow{ display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+  .head .eyebrow .bar{ width:30px; height:1px; background:var(--line-strong); }
+  .head h1{ font-family:var(--font-display); font-weight:600; font-size:62px; line-height:0.96; letter-spacing:-0.012em; margin:0; color:var(--fg); }
+  .head h1 .lit{ color:var(--lum); }
+  .head .lede{ margin:14px 0 0; max-width:40ch; }
+  .head .cta-row{ display:flex; gap:14px; flex-shrink:0; }
+
+  .diagram{ position:relative; z-index:3; margin-top:10px; }
+  .diagram svg{ display:block; width:100%; height:480px; }
+
+  .node rect{ fill:var(--ink-800); stroke:var(--line-2); stroke-width:1; }
+  .node text{ font-family:var(--font-text); font-size:14px; fill:var(--fg-soft); }
+  .node.you rect{ fill:#1a1a1e; stroke:var(--line-strong); }
+  .node.you text{ fill:var(--fg); font-weight:500; }
+  .node.hub rect{ fill:#141417; stroke:var(--lum); stroke-width:1.25; }
+  .node.hub text{ fill:var(--lum); font-family:var(--font-display); font-weight:600; letter-spacing:0.04em; }
+
+  .chaos-line{ stroke:var(--fg-faint); stroke-width:1; fill:none; opacity:.7; }
+  .chaos-line.x{ stroke:var(--fg-ghost); }
+  .order-line{ stroke:var(--line-strong); stroke-width:1; fill:none; }
+  .trunk{ stroke:var(--lum); stroke-width:1.75; fill:none; }
+  .flow{ stroke:var(--lum); stroke-width:1.75; fill:none; stroke-dasharray:2 14; animation:flow calc(2.2s / var(--motion)) linear infinite; }
+  @keyframes flow{ to{ stroke-dashoffset:-160; } }
+  .pulse{ fill:var(--lum); filter:drop-shadow(0 0 5px rgba(255,255,255,0.8)); }
+
+  .grp-lbl{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; }
+  .grp-lbl.before{ fill:var(--fg-dim); }
+  .grp-lbl.after{ fill:var(--fg); }
+  .grp-sub{ font-family:var(--font-mono); font-size:10px; letter-spacing:0.06em; fill:var(--fg-faint); }
+  .divider{ stroke:var(--line); stroke-width:1; }
+  .arrow-badge circle{ fill:var(--ink-850); stroke:var(--line-2); }
+  .arrow-badge path{ stroke:var(--fg); stroke-width:1.4; fill:none; }
+
+  .reveal{ opacity:0; transform:translateY(12px); animation:rise calc(.8s / var(--motion)) cubic-bezier(.2,.7,.3,1) forwards; }
+  .reveal.d2{ animation-delay:.12s; } .reveal.d3{ animation-delay:.24s; }
+  @keyframes rise{ to{opacity:1;transform:none;} }
+  @media (prefers-reduced-motion:reduce){ .reveal{ animation:none; opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="vig"></div>
+  <nav class="nav">
+    <div class="wordmark">OTO<b>NOM</b></div>
+    <div class="links"><a href="#">Solutions</a><a href="#">Méthode</a><a href="#">Simulateurs</a><a href="#">Ressources</a></div>
+    <div class="right"><a class="login" href="#">Se connecter</a><a class="btn btn-primary" href="#">Réserver mon audit gratuit <span class="arrow">→</span></a></div>
+  </nav>
+
+  <div class="head">
+    <div class="reveal">
+      <div class="eyebrow"><span class="bar"></span><span class="eyebrow">Orchestration</span></div>
+      <h1>Cinq prestataires.<br>Ou <span class="lit">un seul partenaire</span>.</h1>
+      <p class="lede">Installateurs, énergéticiens, financeurs, mainteneurs : OTONOM les coordonne tous. Vous, vous ne parlez qu'à une personne.</p>
+    </div>
+    <div class="cta-row reveal d2">
+      <a class="btn btn-primary" href="#">Réserver mon audit gratuit <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="#">Simuler mes économies</a>
+    </div>
+  </div>
+
+  <div class="diagram reveal d3">
+    <svg viewBox="0 0 1440 480" preserveAspectRatio="xMidYMid meet">
+      <g id="chaosLines"></g>
+      <g id="chaosNodes"></g>
+      <!-- divider -->
+      <line class="divider" x1="720" y1="36" x2="720" y2="444"/>
+      <g class="arrow-badge" transform="translate(720,240)"><circle r="22"/><path d="M-7,-7 L7,0 L-7,7 M-9,0 H7"/></g>
+      <g id="orderLines"></g>
+      <g id="orderNodes"></g>
+      <text class="grp-lbl before" x="100" y="34">Aujourd'hui</text>
+      <text class="grp-sub" x="100" y="50">5 contrats · 5 factures · 5 numéros</text>
+      <text class="grp-lbl after" x="800" y="34">Avec OTONOM</text>
+      <text class="grp-sub" x="800" y="50">1 contrat · 1 interlocuteur · 1 bilan</text>
+    </svg>
+  </div>
+</div>
+<div class="grain"></div>
+
+<script>
+(function(){
+  var ns='http://www.w3.org/2000/svg';
+  function node(g, x,y, label, cls){
+    var w=Math.max(96, label.length*7.6+30), h=38;
+    var grp=document.createElementNS(ns,'g'); grp.setAttribute('class','node '+(cls||''));
+    var r=document.createElementNS(ns,'rect'); r.setAttribute('x',x-w/2);r.setAttribute('y',y-h/2);r.setAttribute('width',w);r.setAttribute('height',h);r.setAttribute('rx',8);
+    var t=document.createElementNS(ns,'text'); t.setAttribute('x',x);t.setAttribute('y',y+5);t.setAttribute('text-anchor','middle');t.textContent=label;
+    grp.appendChild(r);grp.appendChild(t);g.appendChild(grp); return {x:x,y:y,w:w,h:h};
+  }
+  function path(g,d,cls){ var p=document.createElementNS(ns,'path');p.setAttribute('d',d);p.setAttribute('class',cls);g.appendChild(p);return p; }
+
+  // ----- CHAOS (left) -----
+  var cl=document.getElementById('chaosLines'), cn=document.getElementById('chaosNodes');
+  var you1={x:330,y:240};
+  var provs=[
+    {l:'Installateur bornes', x:150, y:110},
+    {l:'Énergéticien', x:560, y:130},
+    {l:'Financeur / leasing', x:120, y:360},
+    {l:'Mainteneur', x:580, y:350},
+    {l:'Bureau d\u2019études', x:340, y:420}
+  ];
+  // tangled wandering lines you->prov
+  provs.forEach(function(p,i){
+    var mx=(you1.x+p.x)/2 + (i%2?80:-90), my=(you1.y+p.y)/2 + (i%2?-70:90);
+    path(cl, 'M'+you1.x+','+you1.y+' Q'+mx+','+my+' '+p.x+','+p.y, 'chaos-line');
+  });
+  // cross-connections between providers (mess)
+  path(cl,'M'+provs[0].x+','+provs[0].y+' Q400,40 '+provs[1].x+','+provs[1].y,'chaos-line x');
+  path(cl,'M'+provs[2].x+','+provs[2].y+' Q420,470 '+provs[3].x+','+provs[3].y,'chaos-line x');
+  path(cl,'M'+provs[1].x+','+provs[1].y+' Q470,260 '+provs[3].x+','+provs[3].y,'chaos-line x');
+  provs.forEach(function(p){ node(cn,p.x,p.y,p.l,''); });
+  node(cn, you1.x, you1.y, 'Votre entreprise', 'you');
+
+  // ----- ORDER (right) -----
+  var ol=document.getElementById('orderLines'), on=document.getElementById('orderNodes');
+  var you2={x:850,y:240}, hub={x:1040,y:240};
+  // single trunk you->hub
+  path(ol,'M'+(you2.x+50)+','+you2.y+' H'+(hub.x-66),'trunk');
+  var flow=path(ol,'M'+(you2.x+50)+','+you2.y+' H'+(hub.x-66),'flow');
+  // hub -> providers (neat)
+  var rp=[ {l:'Installateur',y:80},{l:'Énergéticien',y:160},{l:'Financeur',y:240},{l:'Mainteneur',y:320},{l:'Bureau d\u2019études',y:400} ];
+  rp.forEach(function(p){ path(ol,'M'+(hub.x+66)+','+hub.y+' C'+(hub.x+150)+','+hub.y+' '+1230+','+p.y+' '+1280+','+p.y,'order-line'); });
+  rp.forEach(function(p){ node(on, 1330, p.y, p.l, ''); });
+  node(on, you2.x, you2.y, 'Votre entreprise', 'you');
+  node(on, hub.x, hub.y, 'OTONOM', 'hub');
+
+  // pulse on trunk
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce){
+    var pl=document.createElementNS(ns,'circle'); pl.setAttribute('class','pulse'); pl.setAttribute('r','3.2'); ol.appendChild(pl);
+    var x0=you2.x+50, x1=hub.x-66, dur=2200, t0=null;
+    function step(t){ if(!t0)t0=t; var p=((t-t0)%dur)/dur; pl.setAttribute('cx', x0+(x1-x0)*p); pl.setAttribute('cy', you2.y); requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+})();
+</script>
+</body>
+</html>
