@@ -1,57 +1,88 @@
 // ============================================================
-// OTONOM — Contenu des pôles (hotspots du hero)
-// Ordre = priorité narrative. La FLOTTE est mise en avant (n°1).
-// `anchor` = nom logique d'un point 3D fourni par Forecourt/Building.
+// OTONOM — Contenu des pôles (hotspots + cards riches).
+// Ordre = priorité narrative ; la FLOTTE est en n°1.
+// Chiffres = exemples réalistes illustratifs (ratios), pas des
+// engagements — à remplacer par les vrais chiffres client.
 // ============================================================
 
 export const ZONES = [
   {
-    id: 'flotte',
-    key: 'Cœur du système',
+    id: 'flotte', anchor: 'fleetChargers', key: 'Cœur du système',
     title: 'Recharge de flotte',
-    desc: 'Bornes rapides pilotées : vos véhicules se chargent au meilleur moment, sans jamais dépasser la puissance souscrite.',
-    anchor: 'fleetChargers',
+    metric: '−23%', metricLabel: 'sur le contrat d’électricité de la flotte',
+    example: 'Flotte de 15 VUL : la recharge lissée évite le pic de 18 h et puise le solaire en priorité — départs garantis à l’heure.',
+    badge: 'Loi LOM', badgeKind: 'law',
+    note: 'Verdissement des flottes désormais imposé : anticipez les quotas avec une infra pilotée plutôt que subie.',
+    cta: 'Évaluer ma flotte', href: '#flotte',
   },
   {
-    id: 'solaire',
-    key: 'Production',
+    id: 'solaire', anchor: 'roofSolar', key: 'Production',
     title: 'Toiture solaire',
-    desc: 'Le toit du bâtiment produit l’énergie consommée sur place — autoconsommée en priorité par la flotte et les bureaux.',
-    anchor: 'roofSolar',
+    metric: 'jusqu’à 100%', metricLabel: 'd’autoconsommation sur l’énergie de la flotte',
+    example: '≈1 200 m² de toiture → ~180 MWh/an, consommés sur place avant le moindre achat au réseau.',
+    badge: 'Décret tertiaire', badgeKind: 'law',
+    note: '−40% de conso d’ici 2030 (plateforme OPERAT) : chaque kWh solaire autoconsommé compte double.',
+    cta: 'Étudier mon potentiel', href: '#contact',
   },
   {
-    id: 'ombrieres',
-    key: 'Production + abri',
+    id: 'ombrieres', anchor: 'carport', key: 'Production + abri',
     title: 'Ombrières photovoltaïques',
-    desc: 'Le parvis abrite et recharge les véhicules légers tout en produisant. Double usage du moindre m².',
-    anchor: 'carport',
+    metric: '×2', metricLabel: 'le même m² produit ET abrite les véhicules',
+    example: 'Un parking de 40 places ombrièré couvre la recharge des VP salariés en pleine journée.',
+    badge: 'Loi APER', badgeKind: 'law',
+    note: 'Parkings extérieurs >1 500 m² : ombrières PV désormais obligatoires. On transforme la contrainte en actif.',
+    cta: 'Vérifier mon obligation', href: '#contact',
   },
   {
-    id: 'stockage',
-    key: 'Tampon',
+    id: 'stockage', anchor: 'bess', key: 'Tampon',
     title: 'Stockage (BESS)',
-    desc: 'La batterie lisse les pics, stocke le surplus solaire et sécurise la recharge même quand le réseau est tendu.',
-    anchor: 'bess',
+    metric: '−30%', metricLabel: 'sur les pointes de puissance facturées',
+    example: 'La batterie écrête les appels de puissance et stocke le surplus solaire du midi pour la recharge du soir.',
+    badge: 'Optimisation TURPE', badgeKind: 'opt',
+    note: 'Moins de puissance souscrite, zéro pénalité de dépassement.',
+    cta: 'Dimensionner un BESS', href: '#contact',
   },
   {
-    id: 'ems',
-    key: 'Le cerveau',
+    id: 'ems', anchor: 'emsCore', key: 'Le cerveau',
     title: 'Pilotage EMS',
-    desc: 'Au rez-de-chaussée, l’EMS arbitre en temps réel entre solaire, batterie, réseau et flotte. C’est lui qui pense.',
-    anchor: 'emsCore',
+    metric: '24/7', metricLabel: 'd’arbitrage automatique solaire · batterie · réseau · flotte',
+    example: 'L’EMS décide chaque minute où va le kWh le moins cher. Le reporting réglementaire est généré tout seul.',
+    badge: 'Conformité OPERAT', badgeKind: 'law',
+    note: 'Déclaration du décret tertiaire automatisée : fini le reporting manuel et les oublis.',
+    cta: 'Voir la supervision', href: '#methode',
   },
   {
-    id: 'reseau',
-    key: 'Raccordement',
+    id: 'reseau', anchor: 'gridBox', key: 'Raccordement',
     title: 'Poste de livraison',
-    desc: 'Le point d’échange avec le réseau. OTONOM en limite l’usage : moins d’abonnement, moins de pénalités de pointe.',
-    anchor: 'gridBox',
+    metric: '−18%', metricLabel: 'sur l’abonnement réseau souscrit',
+    example: 'En limitant la puissance de pointe, on réduit la puissance souscrite TURPE — l’abonnement baisse mécaniquement.',
+    badge: 'Optimisation TURPE', badgeKind: 'opt',
+    note: 'Le point d’échange avec le réseau, piloté pour coûter le moins cher possible.',
+    cta: 'Auditer mon raccordement', href: '#contact',
   },
 ];
 
-// Étages du bâtiment, du bas vers le haut — utilisés par l'éclatement vertical.
 export const FLOORS = [
   { id: 'rdc', label: 'RDC — Accueil & EMS' },
   { id: 'r1',  label: 'R+1 — Comptabilité énergie' },
   { id: 'r2',  label: 'R+2 — Ressources humaines' },
 ];
+
+// Shared rich-card markup (used by desktop popovers AND the mobile sheet).
+export function cardHTML(z) {
+  return `
+    <div class="zcard">
+      <p class="zcard__k">${z.key}</p>
+      <h3 class="zcard__t">${z.title}</h3>
+      <div class="zcard__metric">
+        <span class="zcard__v">${z.metric}</span>
+        <span class="zcard__vl">${z.metricLabel}</span>
+      </div>
+      <p class="zcard__ex"><span class="zcard__ex-tag">Exemple</span>${z.example}</p>
+      <div class="zcard__note">
+        <span class="badge badge--${z.badgeKind}">${z.badge}</span>
+        <span class="zcard__note-t">${z.note}</span>
+      </div>
+      <a class="btn btn--primary btn--sm zcard__cta" href="${z.href}">${z.cta} →</a>
+    </div>`;
+}
