@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OTONOM — L'énergie qui pilote vos sites & vos flottes</title>
+  <meta name="description" content="OTONOM orchestre l'énergie de vos sites tertiaires et de vos flottes : production solaire, stockage, recharge intelligente et pilotage EMS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body>
+  <div id="app">
+    <!-- HERO -->
+    <header class="hero" id="hero">
+      <div class="stage" id="stage">
+        <div class="stage__loading" id="loading">Initialisation de la scène…</div>
+        <!-- hotspot pins are injected here by Hotspots.js -->
+        <div class="hotspots" id="hotspots"></div>
+      </div>
+
+      <div class="hero__ui">
+        <nav class="nav">
+          <a class="nav__logo" href="#hero">OTONOM</a>
+          <div class="nav__links">
+            <a href="#orchestration">Orchestration</a>
+            <a href="#flotte">Flotte</a>
+            <a href="#methode">Méthode</a>
+            <a href="#contact" class="nav__cta">Parler à un expert</a>
+          </div>
+        </nav>
+
+        <div class="hero__copy">
+          <p class="eyebrow">Énergie pilotée · sites &amp; flottes</p>
+          <h1 class="display hero__title">
+            Votre site devient<br />une <em>centrale qui pense</em>.
+          </h1>
+          <p class="hero__sub">
+            Production solaire, stockage, recharge de flotte et pilotage EMS —
+            orchestrés en un seul système. Survolez le bâtiment pour explorer.
+          </p>
+          <div class="hero__actions">
+            <button class="btn btn--primary" id="cta-explode" type="button">
+              Éclater le bâtiment
+            </button>
+            <a class="btn btn--ghost" href="#orchestration">Voir l'orchestration</a>
+          </div>
+        </div>
+
+        <div class="hero__hint" id="hero-hint">Glissez pour pivoter · molette pour zoomer</div>
+      </div>
+    </header>
+
+    <!-- Sections marketing montées par main.js -->
+    <main id="sections"></main>
+  </div>
+
+  <div class="grain" aria-hidden="true"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

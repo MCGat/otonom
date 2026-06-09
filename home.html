@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTONOM — Un seul partenaire pour toute votre transition</title>
+<meta name="description" content="OTONOM orchestre votre transition énergie-mobilité : bornes de recharge, solaire, flotte VE, efficacité énergétique. Un seul interlocuteur, de A à Z.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@300;400;500;600;700&family=Hanken+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   OTONOM — Design Tokens
+   ============================================================ */
+:root {
+  --ink-900:#08080a; --ink-850:#0d0d0f; --ink-800:#121214;
+  --ink-750:#17171a; --ink-700:#1d1d21; --ink-650:#26262b;
+  --fg:#f3f4f6;
+  --fg-soft:rgba(243,244,246,.74); --fg-dim:rgba(243,244,246,.50);
+  --fg-faint:rgba(243,244,246,.30); --fg-ghost:rgba(243,244,246,.14);
+  --line:rgba(243,244,246,.085); --line-2:rgba(243,244,246,.14); --line-strong:rgba(243,244,246,.24);
+  --lum:#ffffff;
+  --font-display:'Saira Condensed','Arial Narrow',sans-serif;
+  --font-text:'Hanken Grotesk',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --pad:clamp(24px,6vw,80px);
+  --hh:74px; /* header height */
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth;}
+body{margin:0;background:var(--ink-900);color:var(--fg);font-family:var(--font-text);font-size:16px;line-height:1.55;font-weight:400;letter-spacing:.01em;}
+
+/* ── Grain ─────────────────────────────────────────────── */
+.grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.38;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ── Buttons ───────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-text);font-size:14px;font-weight:500;
+  letter-spacing:.01em;padding:13px 22px;border-radius:8px;border:1px solid transparent;cursor:pointer;
+  text-decoration:none;white-space:nowrap;
+  transition:transform .25s cubic-bezier(.2,.7,.3,1),background .25s,border-color .25s,box-shadow .25s,color .25s;}
+.btn-primary{background:var(--lum);color:#0a0a0b;border-color:var(--lum);}
+.btn-primary:hover{box-shadow:0 0 30px rgba(255,255,255,.22);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--line-strong);}
+.btn-ghost:hover{border-color:var(--fg);background:rgba(255,255,255,.04);}
+.btn .arrow{transition:transform .3s cubic-bezier(.2,.7,.3,1);}
+.btn:hover .arrow{transform:translateX(4px);}
+.btn-sm{font-size:13px;padding:10px 18px;}
+
+/* ── Shared section layout ─────────────────────────────── */
+.section{padding:clamp(80px,11vh,140px) var(--pad);border-top:1px solid var(--line);}
+.section-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:20px;
+  font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--fg-dim);}
+.section-eyebrow .bar{width:28px;height:1px;background:var(--line-strong);}
+.section-h{font-family:var(--font-display);font-weight:600;font-size:clamp(42px,5vw,62px);
+  line-height:.96;letter-spacing:-.012em;margin:0 0 18px;color:var(--fg);}
+.section-h .lit{color:var(--lum);}
+.section-sub{font-size:18px;line-height:1.55;color:var(--fg-soft);max-width:52ch;}
+
+/* ── Scroll reveal ─────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(18px);}
+.reveal.in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1);}
+.reveal.d1.in{transition-delay:.08s;}.reveal.d2.in{transition-delay:.16s;}
+.reveal.d3.in{transition-delay:.26s;}.reveal.d4.in{transition-delay:.38s;}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
+
+/* ============================================================
+   STICKY HEADER
+   ============================================================ */
+.site-header{
+  position:sticky;top:0;z-index:100;height:var(--hh);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--pad);
+  border-bottom:1px solid var(--line);
+  background:rgba(8,8,10,.82);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:background .3s,border-color .3s;
+}
+.wordmark{font-family:var(--font-display);font-weight:700;font-size:22px;letter-spacing:.16em;color:var(--fg);text-decoration:none;}
+.wordmark b{color:var(--lum);}
+.hd-nav{display:flex;gap:32px;}
+.hd-nav a{font-size:13.5px;color:var(--fg-soft);text-decoration:none;transition:color .2s;}
+.hd-nav a:hover{color:var(--fg);}
+.hd-right{display:flex;align-items:center;gap:14px;}
+.hd-login{font-size:13.5px;color:var(--fg-soft);text-decoration:none;white-space:nowrap;}
+.burger{display:none;width:40px;height:40px;border:1px solid var(--line-2);border-radius:9px;
+  background:rgba(255,255,255,.02);cursor:pointer;flex-direction:column;gap:4px;align-items:center;justify-content:center;}
+.burger span{width:17px;height:1.5px;background:var(--fg-soft);}
+.mobile-nav{display:none;position:fixed;inset:var(--hh) 0 0;z-index:99;
+  background:var(--ink-900);padding:32px var(--pad);flex-direction:column;gap:4px;border-top:1px solid var(--line);}
+.mobile-nav.open{display:flex;}
+.mobile-nav a{font-size:18px;color:var(--fg-soft);text-decoration:none;padding:12px 0;border-bottom:1px solid var(--line);}
+.mobile-nav a:last-of-type{border-bottom:0;}
+.mobile-nav .btn{margin-top:20px;justify-content:center;}
+
+/* ============================================================
+   S1 — HERO 3D BÂTIMENT
+   ============================================================ */
+.s-hero{position:relative;height:calc(100vh - var(--hh));overflow:hidden;
+  background:radial-gradient(135% 120% at 64% 4%,#15151a 0%,#0c0c0f 52%,var(--ink-900) 100%);}
+.s-hero .stage{position:absolute;inset:0;z-index:10;perspective:1850px;perspective-origin:55% 47%;
+  cursor:grab;touch-action:pan-y;}
+.s-hero .stage.dragging{cursor:grabbing;}
+.s-hero .stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:5;
+  background:
+    linear-gradient(90deg,rgba(11,11,14,.94) 0%,rgba(11,11,14,.5) 26%,transparent 48%),
+    radial-gradient(120% 70% at 50% 128%,rgba(10,10,13,.7),transparent 58%);}
+.world{position:absolute;left:60%;top:70%;width:0;height:0;transform-style:preserve-3d;
+  transform:scale(var(--fit,.58)) rotateX(56deg) rotateZ(var(--rz,-40deg));}
+.layer{position:absolute;left:0;top:0;transform-style:preserve-3d;pointer-events:none;
+  transform:translateZ(var(--zc));transition:transform 1.15s cubic-bezier(.55,.06,.18,1),opacity .4s;}
+.world.exploded .layer{transform:translateZ(var(--ze));}
+.layer.dim{opacity:.32;}
+.slab{position:absolute;left:0;top:0;transform-style:preserve-3d;pointer-events:none;}
+.face{position:absolute;backface-visibility:hidden;pointer-events:none;}
+/* ── Building faces – game-style textures ── */
+.face.top{background:linear-gradient(150deg,#252a44,#1c2038);box-shadow:inset 0 0 0 1px rgba(255,255,255,.09);}
+.face.top::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(130deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,0) 35%,rgba(0,0,0,.28) 100%);}
+.face.side{background:#1c1f35;}
+/* South face: window column texture */
+.face.side.s{
+  background:
+    repeating-linear-gradient(90deg,#1a1e38 0,#1a1e38 13px,transparent 13px,transparent 57px,#1a1e38 57px,#1a1e38 70px),
+    linear-gradient(0deg,#131628 0%,#131628 13%,rgba(72,138,232,.42) 13%,rgba(48,106,210,.28) 87%,#131628 87%,#131628 100%),
+    #1c2040;
+  box-shadow:inset 0 2px 0 rgba(90,140,255,.2),inset 0 -1px 0 rgba(255,255,255,.06);
+}
+/* East face: darker window texture */
+.face.side.e{
+  background:
+    repeating-linear-gradient(90deg,#111428 0,#111428 12px,transparent 12px,transparent 50px,#111428 50px,#111428 62px),
+    linear-gradient(0deg,#0d1020 0%,#0d1020 13%,rgba(50,100,180,.28) 13%,rgba(36,78,158,.18) 87%,#0d1020 87%,#0d1020 100%),
+    #141830;
+}
+.deck{position:absolute;left:0;top:0;transform-style:preserve-3d;pointer-events:none;}
+.surf-asphalt{
+  background:
+    repeating-linear-gradient(0deg,transparent 0 39px,rgba(255,255,255,.05) 39px 41px),
+    repeating-linear-gradient(90deg,transparent 0 79px,rgba(255,255,255,.07) 79px 81px),
+    linear-gradient(160deg,#161820,#111420);}
+.surf-floor{
+  background:linear-gradient(150deg,#282c48 0%,#202438 55%,#1a1e32 100%);}
+.surf-floor::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:30px 30px;}
+.surf-rdc{background:linear-gradient(150deg,#22283e,#181e30);}
+.surf-r1{background:linear-gradient(150deg,#24284a,#1a1e3a);} /* compta */
+.surf-r2{background:linear-gradient(150deg,#2a2850,#1e1c3e);} /* RH */
+.surf-tech{background:linear-gradient(150deg,#22252e,#181b24);}
+.surf-tech::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.5px);background-size:24px 24px;}
+.surf-roof{background:linear-gradient(150deg,#1a1d2c,#12141e);}
+/* Vegetation ground */
+.surf-grass{background:linear-gradient(150deg,#0e1a10,#0b140d);}
+/* Solar panels – vivid blue */
+.surf-solar{
+  background:
+    repeating-linear-gradient(0deg,#060a18 0 8px,#0e1a30 8px 9px),
+    repeating-linear-gradient(90deg,#060a18 0 11px,#102240 11px 12px),
+    #0a1428;
+  box-shadow:inset 0 0 40px rgba(30,80,200,.4);
+}
+.wall{position:absolute;background:linear-gradient(180deg,#252840,#1a1c30);box-shadow:0 1px 0 rgba(0,0,0,.4);}
+.glass{position:absolute;background:linear-gradient(120deg,rgba(100,140,200,.38),rgba(20,30,60,.55));border:1px solid rgba(160,200,255,.22);box-shadow:inset 0 0 24px rgba(120,170,255,.18);}
+.litcell{position:absolute;background:rgba(180,220,255,.82);box-shadow:0 0 12px rgba(150,200,255,.7);border-radius:1px;}
+.unit{position:absolute;transform-style:preserve-3d;}
+.unit .u-top{position:absolute;background:linear-gradient(150deg,#2e3250,#22263e);border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);}
+.unit .u-s{position:absolute;background:#1e2240;}
+.unit .u-e{position:absolute;background:#141830;}
+.unit.lit .u-top{background:linear-gradient(150deg,#eef2ff,#d0d8f8);box-shadow:0 0 20px rgba(180,200,255,.6),inset 0 0 0 1px rgba(255,255,255,.5);}
+.unit.lit .u-s{background:#4a5070;}.unit.lit .u-e{background:#343858;}
+.unit.dark .u-top{background:linear-gradient(150deg,#1a1c28,#141620);}
+/* Solar panels */
+.solar{position:absolute;transform-style:preserve-3d;}
+.solar .panel{position:absolute;
+  background:
+    repeating-linear-gradient(0deg,#060c20 0 8px,#0e1a34 8px 9px),
+    repeating-linear-gradient(90deg,#060c20 0 11px,#0e2040 11px 12px),
+    #0a1530;
+  border:1px solid #1a3060;box-shadow:0 0 18px rgba(30,80,200,.35),0 6px 14px -8px rgba(0,0,0,.8);}
+/* EV infrastructure */
+.borne{position:absolute;transform-style:preserve-3d;}
+.borne-ac .u-top{background:#1a2838!important;box-shadow:0 0 10px rgba(0,200,100,.4)!important;}
+.borne-dc .u-top{background:#1e1a10!important;box-shadow:0 0 10px rgba(255,140,0,.4)!important;}
+.borne-fleet .u-top{background:#201820!important;box-shadow:0 0 10px rgba(180,80,255,.35)!important;}
+/* Battery BESS unit */
+.batt .u-top{background:linear-gradient(150deg,#2a1a08,#1e1208)!important;box-shadow:0 0 16px rgba(255,120,0,.3)!important;}
+.batt .u-s{background:#241408!important;}.batt .u-e{background:#1a0e04!important;}
+/* Network/contract box */
+.netbox .u-top{background:linear-gradient(150deg,#080e28,#060a1e)!important;box-shadow:0 0 14px rgba(0,160,255,.35)!important;}
+.netbox .u-s{background:#060c22!important;}.netbox .u-e{background:#040818!important;}
+/* Vehicle classes */
+.car{position:absolute;transform-style:preserve-3d;}
+.truck{position:absolute;transform-style:preserve-3d;}
+.van{position:absolute;transform-style:preserve-3d;}
+/* Zone badge color variants */
+.zh-flotte .zbtn{border-color:rgba(255,255,255,.35);}
+.zh-recharge .zbtn{border-color:rgba(0,200,100,.5);color:#4de880;}
+.zh-recharge .zpulse{background:#00c864;box-shadow:0 0 0 3px rgba(0,200,100,.12),0 0 12px rgba(0,200,100,.6);}
+.zh-solaire .zbtn{border-color:rgba(60,140,255,.55);color:#82b4ff;}
+.zh-solaire .zpulse{background:#4090ff;box-shadow:0 0 0 3px rgba(60,140,255,.15),0 0 12px rgba(60,140,255,.65);}
+.zh-batterie .zbtn{border-color:rgba(255,140,0,.5);color:#ffb060;}
+.zh-batterie .zpulse{background:#ff9020;box-shadow:0 0 0 3px rgba(255,140,0,.12),0 0 12px rgba(255,140,0,.6);}
+.zh-rh .zbtn{border-color:rgba(180,100,255,.5);color:#cc88ff;}
+.zh-rh .zpulse{background:#b060ff;box-shadow:0 0 0 3px rgba(180,100,255,.12),0 0 12px rgba(180,100,255,.6);}
+.zh-compta .zbtn{border-color:rgba(255,210,0,.5);color:#ffd84e;}
+.zh-compta .zpulse{background:#ffca00;box-shadow:0 0 0 3px rgba(255,200,0,.12),0 0 12px rgba(255,200,0,.6);}
+/* Zone badges */
+.zone-hot{position:absolute;transform-style:preserve-3d;width:0;height:0;pointer-events:none;z-index:6;}
+.zbtn{position:absolute;left:-54px;top:-18px;
+  transform:rotateZ(calc(-1 * var(--rz,-40deg))) rotateX(-56deg);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--fg);font-weight:500;
+  background:rgba(8,8,11,.86);border:1px solid rgba(255,255,255,.28);
+  padding:8px 16px;border-radius:100px;white-space:nowrap;
+  pointer-events:auto;cursor:pointer;backdrop-filter:blur(8px);
+  transition:background .2s,border-color .2s,box-shadow .2s;
+  display:flex;align-items:center;gap:8px;}
+.zbtn:hover,.zbtn.zactive{
+  background:rgba(18,18,22,.96);border-color:rgba(255,255,255,.6);
+  box-shadow:0 0 22px rgba(255,255,255,.14);}
+.zbtn .zarr{color:var(--fg-faint);transition:transform .2s,color .2s;}
+.zbtn:hover .zarr{transform:translateX(3px);color:var(--fg-dim);}
+.zpulse{position:absolute;left:-6px;top:-6px;width:12px;height:12px;border-radius:50%;
+  background:rgba(255,255,255,.9);
+  transform:rotateZ(calc(-1 * var(--rz,-40deg))) rotateX(-56deg);
+  box-shadow:0 0 0 3px rgba(255,255,255,.08),0 0 12px rgba(255,255,255,.5);
+  animation:hotpulse 2.8s infinite;pointer-events:none;}
+@keyframes hotpulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.4);}70%{box-shadow:0 0 0 12px rgba(255,255,255,0);}100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}}
+/* Zone tooltip */
+.zone-tip{position:absolute;z-index:82;width:252px;
+  transform:translateX(-50%) translateY(calc(-100% - 14px));
+  background:linear-gradient(180deg,rgba(22,22,28,.99),rgba(12,12,16,.99));
+  border:1px solid rgba(255,255,255,.14);border-radius:14px;
+  box-shadow:0 28px 64px -16px rgba(0,0,0,.96),0 0 0 1px rgba(255,255,255,.04);
+  backdrop-filter:blur(16px);padding:16px 18px 14px;
+  pointer-events:none;opacity:0;visibility:hidden;
+  transition:opacity .18s,visibility .18s;}
+.zone-tip.show{opacity:1;visibility:visible;pointer-events:auto;}
+.zone-tip::after{content:'';position:absolute;left:50%;bottom:-5px;
+  width:10px;height:10px;
+  background:rgba(12,12,16,.99);border-right:1px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(255,255,255,.14);
+  transform:translateX(-50%) rotate(45deg);}
+.zt-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;}
+.zt-lbl{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-faint);}
+.zt-total{font-family:var(--font-mono);font-size:19px;font-weight:500;color:var(--lum);letter-spacing:-.01em;}
+.zt-tag{font-size:12.5px;font-weight:500;color:var(--fg);margin-bottom:9px;}
+.zt-list{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:4px;}
+.zt-list li{font-size:12px;color:var(--fg-soft);display:flex;align-items:baseline;gap:7px;}
+.zt-list li::before{content:'—';color:var(--fg-ghost);flex-shrink:0;font-size:10px;}
+.zt-cta{display:flex;align-items:center;justify-content:space-between;text-decoration:none;
+  font-size:12.5px;font-weight:500;color:#09090b;background:var(--lum);
+  padding:9px 13px;border-radius:8px;transition:box-shadow .2s;}
+.zt-cta:hover{box-shadow:0 0 20px rgba(255,255,255,.26);}
+/* copy */
+.hero-copy{position:absolute;z-index:40;top:clamp(48px,8vh,100px);left:clamp(20px,4vw,56px);width:min(440px,42vw);pointer-events:none;}
+.hero-copy>*{pointer-events:auto;}
+.hero-copy .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:22px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--fg-dim);}
+.hero-copy .eyebrow .bar{width:30px;height:1px;background:var(--line-strong);}
+.hero-copy h1{font-family:var(--font-display);font-weight:600;font-size:clamp(38px,4.6vw,56px);line-height:.98;letter-spacing:-.01em;margin:0 0 18px;color:var(--fg);text-wrap:balance;}
+.hero-copy h1 .lit{color:var(--lum);}
+.hero-copy .lede{margin:0 0 28px;max-width:40ch;font-size:17px;line-height:1.55;color:var(--fg-soft);}
+.ticker{display:inline-flex;align-items:baseline;gap:8px;margin-bottom:26px;font-family:var(--font-mono);color:var(--fg-dim);font-size:12px;letter-spacing:.04em;}
+.ticker .val{font-size:20px;color:var(--lum);font-weight:500;letter-spacing:-.01em;}
+.cta-row{display:flex;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+.hint{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-faint);}
+.hint .kbd{border:1px solid var(--line-2);border-radius:4px;padding:2px 6px;color:var(--fg-dim);}
+/* controls */
+.hero-controls{position:absolute;z-index:45;right:clamp(16px,3vw,40px);bottom:28px;display:flex;gap:10px;}
+.ctl{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-text);font-size:13px;color:var(--fg);
+  background:rgba(20,20,23,.72);border:1px solid var(--line-2);padding:10px 15px;border-radius:100px;cursor:pointer;backdrop-filter:blur(6px);transition:border-color .2s;}
+.ctl:hover{border-color:var(--fg);}
+.ctl .sw{width:26px;height:15px;border-radius:100px;border:1px solid var(--line-strong);position:relative;}
+.ctl .sw::after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:var(--fg-dim);top:2px;left:2px;transition:left .2s,background .2s;}
+.ctl.on .sw{border-color:var(--lum);}.ctl.on .sw::after{left:13px;background:var(--lum);}
+/* legend */
+.hero-legend{position:absolute;z-index:42;right:clamp(16px,3vw,40px);top:clamp(48px,8vh,100px);display:flex;flex-direction:column;gap:2px;text-align:right;pointer-events:none;opacity:0;transition:opacity .5s;}
+.world.exploded~.hero-legend{opacity:1;}
+.hero-legend .li{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-faint);padding:5px 0;cursor:pointer;pointer-events:auto;transition:color .2s;}
+.hero-legend .li:hover,.hero-legend .li.active{color:var(--fg);}
+/* detail panel — desktop: absolute, mobile: fixed (see @media) */
+.hero-detail{position:absolute;z-index:70;top:clamp(48px,8vh,100px);right:clamp(16px,3vw,40px);width:360px;max-height:calc(100% - 60px);overflow-y:auto;
+  background:linear-gradient(180deg,rgba(22,22,26,.98),rgba(13,13,16,.98));border:1px solid var(--line-2);border-radius:16px;box-shadow:0 40px 100px -30px rgba(0,0,0,.9);backdrop-filter:blur(14px);
+  transform:translateX(24px);opacity:0;visibility:hidden;transition:transform .34s cubic-bezier(.2,.7,.3,1),opacity .34s,visibility .34s;}
+.hero-detail.show{transform:none;opacity:1;visibility:visible;}
+.hero-detail .dhead{position:relative;padding:20px 20px 16px;border-bottom:1px solid var(--line);}
+.hero-detail .dclose{position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:8px;border:1px solid var(--line-2);background:rgba(255,255,255,.02);color:var(--fg-dim);cursor:pointer;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;transition:color .2s,border-color .2s;}
+.hero-detail .dclose:hover{color:var(--fg);border-color:var(--line-strong);}
+.hero-detail .dposte{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-dim);display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.hero-detail .dposte .ic{width:6px;height:6px;border-radius:50%;background:var(--lum);box-shadow:0 0 8px rgba(255,255,255,.7);}
+.hero-detail h3{font-family:var(--font-display);font-weight:600;font-size:30px;line-height:1;margin:0 0 8px;color:var(--fg);}
+.hero-detail .ddesc{font-size:13.5px;color:var(--fg-soft);margin:0;line-height:1.5;}
+.hero-detail .dbody{padding:18px 20px 20px;}
+.hero-detail .hero-metric{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.hero-detail .hero-metric .big{font-family:var(--font-mono);font-weight:500;font-size:38px;color:var(--lum);letter-spacing:-.02em;line-height:1;}
+.hero-detail .hero-metric .unit2{font-size:13px;color:var(--fg-dim);}
+.hero-detail .hero-sub{font-size:12px;color:var(--fg-dim);margin:0 0 18px;}
+.hero-detail .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;}
+.hero-detail .m{border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:rgba(255,255,255,.015);}
+.hero-detail .m .k{font-size:10.5px;color:var(--fg-dim);letter-spacing:.04em;margin-bottom:6px;}
+.hero-detail .m .v{font-family:var(--font-mono);font-weight:500;font-size:16px;color:var(--fg);letter-spacing:-.01em;}
+.hero-detail .m .v.lum{color:var(--lum);}
+.hero-detail .bars{margin-bottom:18px;}
+.hero-detail .bar{margin-bottom:11px;}
+.hero-detail .bar .bl{display:flex;justify-content:space-between;font-size:11px;color:var(--fg-dim);margin-bottom:5px;}
+.hero-detail .bar .bl b{color:var(--fg-soft);font-weight:500;font-family:var(--font-mono);}
+.hero-detail .bar .track{height:5px;border-radius:100px;background:rgba(255,255,255,.07);overflow:hidden;}
+.hero-detail .bar .fill{height:100%;border-radius:100px;background:linear-gradient(90deg,rgba(255,255,255,.5),var(--lum));width:0;transition:width .8s cubic-bezier(.2,.7,.3,1);}
+.hero-detail .dcta{display:flex;align-items:center;justify-content:space-between;text-decoration:none;font-size:13.5px;font-weight:500;color:#0a0a0b;background:var(--lum);padding:12px 16px;border-radius:9px;transition:box-shadow .2s;}
+.hero-detail .dcta:hover{box-shadow:0 0 26px rgba(255,255,255,.26);}
+.hero-detail .dsecond{display:block;text-align:center;margin-top:10px;font-size:12px;color:var(--fg-dim);text-decoration:none;}
+.hero-detail .dsecond:hover{color:var(--fg-soft);}
+/* scrim — desktop hidden, mobile shown (see @media) */
+.hero-scrim{display:none;position:fixed;inset:0;z-index:65;background:rgba(6,6,8,.6);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;}
+.hero-scrim.show{opacity:1;visibility:visible;}
+/* mobile list */
+.hero-mlist{display:none;}
+
+/* ============================================================
+   S2 — ORCHESTRATION (chaos→ordre)
+   ============================================================ */
+.s-orches{position:relative;min-height:100vh;background:var(--ink-900);border-top:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;}
+.orches-vign{position:absolute;inset:0;background:radial-gradient(90% 70% at 78% 60%,rgba(255,255,255,.035),transparent 55%);pointer-events:none;}
+.orches-head{padding:clamp(52px,8vh,80px) var(--pad) 0;display:flex;align-items:flex-end;justify-content:space-between;gap:40px;position:relative;z-index:2;}
+.orches-head .left{max-width:580px;}
+.orches-head .right{display:flex;gap:14px;flex-shrink:0;}
+.orches-diagram{flex:1;position:relative;z-index:2;min-height:340px;}
+.orches-diagram svg{display:block;width:100%;height:100%;min-height:340px;}
+.node rect{fill:var(--ink-800);stroke:var(--line-2);stroke-width:1;}
+.node text{font-family:var(--font-text);font-size:13px;fill:var(--fg-soft);}
+.node.you rect{fill:#1a1a1e;stroke:var(--line-strong);}
+.node.you text{fill:var(--fg);font-weight:500;}
+.node.hub rect{fill:#141417;stroke:var(--lum);stroke-width:1.25;}
+.node.hub text{fill:var(--lum);font-family:var(--font-display);font-weight:600;letter-spacing:.04em;}
+.chaos-line{stroke:var(--fg-faint);stroke-width:1;fill:none;opacity:.65;}
+.chaos-line.x{stroke:var(--fg-ghost);}
+.order-line{stroke:var(--line-strong);stroke-width:1;fill:none;}
+.trunk{stroke:var(--lum);stroke-width:1.75;fill:none;}
+.flow{stroke:var(--lum);stroke-width:1.75;fill:none;stroke-dasharray:2 14;animation:flow 2.2s linear infinite;}
+@keyframes flow{to{stroke-dashoffset:-160;}}
+.pulse-dot{fill:var(--lum);filter:drop-shadow(0 0 5px rgba(255,255,255,.8));}
+.orches-grp-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;}
+.orches-grp-lbl.before{fill:var(--fg-dim);}
+.orches-grp-lbl.after{fill:var(--fg);}
+.orches-grp-sub{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;fill:var(--fg-faint);}
+.orches-divider{stroke:var(--line);stroke-width:1;}
+.arrow-badge circle{fill:var(--ink-850);stroke:var(--line-2);}
+.arrow-badge path{stroke:var(--fg);stroke-width:1.4;fill:none;}
+
+/* ============================================================
+   S3 — PILIERS
+   ============================================================ */
+.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:60px;border:1px solid var(--line);}
+.pillar{padding:clamp(40px,5vh,64px) clamp(28px,3vw,44px);border-right:1px solid var(--line);}
+.pillar:last-child{border-right:0;}
+.pillar-icon{width:42px;height:42px;margin-bottom:28px;opacity:.7;}
+.pillar-icon svg{width:100%;height:100%;}
+.pillar-num{font-family:var(--font-mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:16px;}
+.pillar-title{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,3vw,36px);line-height:.96;margin:0 0 16px;color:var(--fg);}
+.pillar-body{font-size:15px;color:var(--fg-soft);line-height:1.6;margin:0;}
+
+/* ============================================================
+   S4 — PERSONAS
+   ============================================================ */
+.personas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:52px;}
+.persona-card{background:linear-gradient(180deg,var(--ink-800),var(--ink-850));border:1px solid var(--line);border-radius:14px;padding:28px;
+  text-decoration:none;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;}
+.persona-card:hover{border-color:var(--line-strong);transform:translateY(-2px);}
+.persona-role{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:14px;}
+.persona-name{font-family:var(--font-display);font-weight:600;font-size:clamp(22px,2.2vw,28px);line-height:.98;margin:0 0 14px;color:var(--fg);}
+.persona-pitch{font-size:14px;color:var(--fg-soft);line-height:1.55;margin:0 0 24px;flex:1;}
+.persona-cta{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dim);
+  display:flex;align-items:center;gap:8px;transition:color .2s;}
+.persona-card:hover .persona-cta{color:var(--fg);}
+
+/* ============================================================
+   S5 — MÉTHODE A→Z
+   ============================================================ */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);margin-top:60px;}
+.step{padding:36px clamp(16px,2vw,28px);border-right:1px solid var(--line);position:relative;}
+.step:last-child{border-right:0;}
+.step::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background .3s;}
+.step:hover::before{background:var(--lum);}
+.step-n{font-family:var(--font-mono);font-size:28px;font-weight:500;color:var(--fg-ghost);letter-spacing:-.02em;margin-bottom:20px;line-height:1;}
+.step-title{font-family:var(--font-display);font-weight:600;font-size:clamp(18px,1.8vw,22px);line-height:1;margin:0 0 12px;color:var(--fg);}
+.step-body{font-size:14px;color:var(--fg-soft);line-height:1.55;margin:0;}
+.step-connector{display:none;}
+
+/* ============================================================
+   S6 — SIMULATEURS
+   ============================================================ */
+.sims-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;}
+.sim-card{background:linear-gradient(180deg,var(--ink-800),var(--ink-850));border:1px solid var(--line);border-radius:14px;padding:36px;
+  display:flex;flex-direction:column;transition:border-color .2s;}
+.sim-card:hover{border-color:var(--line-strong);}
+.sim-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:16px;}
+.sim-title{font-family:var(--font-display);font-weight:600;font-size:clamp(22px,2.2vw,28px);line-height:.98;margin:0 0 14px;color:var(--fg);}
+.sim-desc{font-size:14px;color:var(--fg-soft);line-height:1.55;margin:0 0 28px;flex:1;}
+.sim-cta{align-self:flex-start;}
+
+/* ============================================================
+   S7 — RÉASSURANCE
+   ============================================================ */
+.s-proof{background:linear-gradient(180deg,var(--ink-900),var(--ink-850));}
+.proof-intro{max-width:560px;margin-bottom:60px;}
+.proof-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);}
+.proof-cell{padding:clamp(28px,4vh,44px) clamp(20px,2.5vw,36px);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:10px;}
+.proof-cell:last-child{border-right:0;}
+.proof-num{font-family:var(--font-mono);font-weight:500;font-size:clamp(26px,3vw,36px);color:var(--lum);letter-spacing:-.02em;line-height:1;}
+.proof-num .sup{font-size:.55em;vertical-align:top;margin-top:4px;display:inline-block;color:var(--fg-soft);}
+.proof-label{font-size:13px;color:var(--fg-dim);line-height:1.5;}
+.proof-source{font-family:var(--font-mono);font-size:9.5px;color:var(--fg-faint);letter-spacing:.08em;text-transform:uppercase;margin-top:auto;}
+
+/* ============================================================
+   S8 — FAQ
+   ============================================================ */
+.faq-cols{display:grid;grid-template-columns:300px 1fr;gap:80px;margin-top:52px;}
+.faq-side{position:sticky;top:calc(var(--hh) + 32px);align-self:start;}
+.faq-side p{font-size:15px;color:var(--fg-soft);line-height:1.6;margin:16px 0 28px;}
+.faq-list{display:flex;flex-direction:column;gap:0;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-q{width:100%;text-align:left;padding:22px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  background:none;border:none;cursor:pointer;font-family:var(--font-text);font-size:16px;font-weight:500;color:var(--fg);transition:color .2s;}
+.faq-q:hover{color:var(--lum);}
+.faq-q .icon{width:20px;height:20px;border:1px solid var(--line-2);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color .2s,transform .3s;}
+.faq-q .icon svg{width:10px;height:10px;stroke:var(--fg-dim);fill:none;transition:transform .3s;}
+.faq-item.open .faq-q .icon{border-color:var(--lum);}
+.faq-item.open .faq-q .icon svg{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.7,.3,1);}
+.faq-a-inner{padding:0 0 22px;font-size:15px;color:var(--fg-soft);line-height:1.65;}
+.faq-item.open .faq-a{max-height:400px;}
+
+/* ============================================================
+   S9 — CTA FINAL
+   ============================================================ */
+.s-cta{background:linear-gradient(180deg,var(--ink-850),var(--ink-900));text-align:center;padding:clamp(100px,16vh,160px) var(--pad);}
+.cta-pretitle{font-family:var(--font-mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:28px;}
+.cta-h{font-family:var(--font-display);font-weight:600;font-size:clamp(52px,7vw,88px);line-height:.92;letter-spacing:-.02em;margin:0 0 24px;color:var(--fg);}
+.cta-h .lit{color:var(--lum);}
+.cta-sub{font-size:18px;color:var(--fg-soft);max-width:48ch;margin:0 auto 44px;line-height:1.55;}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;}
+.cta-note{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:var(--fg-faint);text-transform:uppercase;margin-top:24px;}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer{border-top:1px solid var(--line);padding:clamp(48px,7vh,80px) var(--pad) clamp(32px,4vh,48px);}
+.footer-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+.footer-brand .wordmark{font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:.16em;color:var(--fg);}
+.footer-brand .wordmark b{color:var(--lum);}
+.footer-brand p{font-size:13.5px;color:var(--fg-dim);line-height:1.6;margin:14px 0 0;max-width:28ch;}
+.footer-col h4{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--fg-faint);margin:0 0 18px;}
+.footer-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul a{font-size:13.5px;color:var(--fg-dim);text-decoration:none;transition:color .2s;}
+.footer-col ul a:hover{color:var(--fg);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-top:28px;border-top:1px solid var(--line);}
+.footer-legal{font-size:12px;color:var(--fg-faint);}
+.footer-legal a{color:var(--fg-faint);text-decoration:none;}
+.footer-legal a:hover{color:var(--fg-dim);}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:1080px){
+  .world{--fit:.56;left:60%;top:60%;}
+  .personas-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:860px){
+  .hd-nav,.hd-login,.hd-right .btn{display:none;}
+  .burger{display:flex;}
+  /* hero */
+  .s-hero{height:auto;min-height:auto;}
+  .s-hero .stage{position:relative;inset:auto;height:46vh;min-height:320px;perspective:1300px;perspective-origin:50% 42%;touch-action:pan-y;}
+  .world{--fit:.42;left:50%;top:50%;transform:scale(var(--fit)) rotateX(58deg) rotateZ(var(--rz,-36deg));}
+  .hero-copy{position:relative;inset:auto;width:auto;padding:28px var(--pad) 6px;pointer-events:auto;}
+  .hero-copy h1{font-size:clamp(34px,9vw,46px);}
+  .hero-copy .lede{font-size:15.5px;max-width:none;}
+  .hero-controls{position:relative;right:auto;bottom:auto;justify-content:center;margin:14px 0 4px;padding:0 var(--pad);}
+  .hero-legend{display:none;}
+  .hot .tag{display:none;}
+  .hero-mlist{display:block;padding:14px var(--pad) 40px;}
+  .hero-scrim{display:block;}
+  .hero-detail{position:fixed;top:auto;right:0;left:0;bottom:0;width:auto;max-height:86vh;border-radius:20px 20px 0 0;transform:translateY(100%);}
+  .hero-detail.show{transform:none;}
+  .hero-detail::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:40px;height:4px;border-radius:100px;background:var(--line-strong);}
+  /* orchestration */
+  .orches-head{flex-direction:column;align-items:flex-start;}
+  .orches-head .right{flex-wrap:wrap;}
+  /* pillars */
+  .pillars-grid{grid-template-columns:1fr;}
+  .pillar{border-right:0;border-bottom:1px solid var(--line);}
+  .pillar:last-child{border-bottom:0;}
+  /* method */
+  .steps{grid-template-columns:1fr;border:1px solid var(--line);}
+  .step{border-right:0;border-bottom:1px solid var(--line);}
+  .step:last-child{border-bottom:0;}
+  /* personas */
+  .personas-grid{grid-template-columns:1fr;}
+  /* sims */
+  .sims-grid{grid-template-columns:1fr;}
+  /* proof */
+  .proof-grid{grid-template-columns:repeat(2,1fr);}
+  .proof-cell:nth-child(2){border-right:0;}
+  .proof-cell:nth-child(3){border-top:1px solid var(--line);}
+  /* faq */
+  .faq-cols{grid-template-columns:1fr;gap:40px;}
+  .faq-side{position:relative;top:auto;}
+  /* footer */
+  .footer-top{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+  /* cta */
+  .cta-h{font-size:clamp(42px,11vw,68px);}
+}
+@media(max-width:480px){
+  .world{--fit:.34;}
+  .s-hero .stage{height:40vh;min-height:280px;}
+  .proof-grid{grid-template-columns:1fr;}
+  .proof-cell{border-right:0;border-bottom:1px solid var(--line);}
+  .proof-cell:last-child{border-bottom:0;}
+}
+@media(prefers-reduced-motion:reduce){
+  .layer{transition:none;}
+  .hot .ring{animation:none;}
+  .flow{animation:none;}
+  .reveal.in{transition:none;}
+}
+/* mobile list styles */
+.hero-mlist .mhead{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-dim);display:flex;align-items:center;gap:10px;margin:24px 0 12px;}
+.hero-mlist .mhead .ln{flex:1;height:1px;background:var(--line);}
+.mcard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;background:linear-gradient(180deg,var(--ink-800),var(--ink-850));border:1px solid var(--line);border-radius:13px;padding:14px 15px;margin-bottom:9px;transition:border-color .2s,transform .15s;}
+.mcard:active{transform:scale(.99);}
+.mcard:hover{border-color:var(--line-strong);}
+.mcard .mnum{font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--lum);letter-spacing:-.02em;min-width:62px;}
+.mcard .mnum .mu{display:block;font-size:9.5px;color:var(--fg-dim);letter-spacing:.08em;text-transform:uppercase;margin-top:2px;}
+.mcard .mmid{flex:1;min-width:0;}
+.mcard .mt{font-family:var(--font-display);font-weight:600;font-size:19px;color:var(--fg);line-height:1.05;}
+.mcard .mp{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-faint);margin-top:3px;}
+.mcard .marr{color:var(--fg-dim);font-size:18px;}
+
+/* ============================================================
+   S_FLOTTE — Flottes en transition
+   ============================================================ */
+.s-flotte{position:relative;overflow:hidden;padding:clamp(80px,11vh,130px) var(--pad);border-top:1px solid var(--line);}
+.s-flotte::before{content:'';position:absolute;inset:0;background:radial-gradient(80% 60% at 72% 50%,rgba(0,180,80,.04),transparent 55%);pointer-events:none;}
+.flotte-layout{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:start;margin-top:clamp(48px,6vh,80px);}
+.flotte-intro .section-h{font-size:clamp(38px,4.2vw,54px);}
+.flotte-kpi{display:flex;flex-direction:column;gap:10px;margin-top:28px;}
+.flotte-kpi-row{display:flex;align-items:center;gap:18px;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.015);transition:border-color .2s;}
+.flotte-kpi-row:hover{border-color:var(--line-strong);}
+.flotte-kpi-row .fk-val{font-family:var(--font-mono);font-size:26px;font-weight:500;color:var(--lum);letter-spacing:-.02em;min-width:80px;}
+.flotte-kpi-row .fk-label{font-size:14px;color:var(--fg-soft);line-height:1.4;}
+.flotte-kpi-row .fk-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-faint);margin-top:2px;}
+.flotte-cards{display:grid;grid-template-rows:auto auto auto;gap:14px;}
+.flotte-card{border:1px solid var(--line);border-radius:14px;padding:clamp(20px,2.5vw,28px);background:linear-gradient(135deg,var(--ink-800),var(--ink-850));position:relative;overflow:hidden;}
+.flotte-card::before{content:'';position:absolute;inset:0;opacity:.06;pointer-events:none;}
+.flotte-card.fc-truck::before{background:radial-gradient(circle at 80% 50%,#4080ff,transparent 55%);}
+.flotte-card.fc-van::before{background:radial-gradient(circle at 80% 50%,#40d080,transparent 55%);}
+.flotte-card.fc-vp::before{background:radial-gradient(circle at 80% 50%,#c080ff,transparent 55%);}
+.fc-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;}
+.fc-name{font-family:var(--font-display);font-weight:600;font-size:26px;color:var(--fg);line-height:1;}
+.fc-badge{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border-radius:100px;border:1px solid;}
+.fc-badge.blue{color:#82b4ff;border-color:rgba(80,140,255,.35);background:rgba(80,140,255,.06);}
+.fc-badge.green{color:#4de880;border-color:rgba(0,200,80,.35);background:rgba(0,200,80,.06);}
+.fc-badge.purple{color:#cc88ff;border-color:rgba(180,100,255,.35);background:rgba(180,100,255,.06);}
+.fc-desc{font-size:14px;color:var(--fg-soft);line-height:1.5;margin:0 0 14px;}
+.fc-items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;}
+.fc-items li{font-size:13px;color:var(--fg-dim);display:flex;align-items:baseline;gap:8px;}
+.fc-items li::before{content:'→';font-size:11px;flex-shrink:0;color:var(--fg-faint);}
+.flotte-cta{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;}
+
+/* ============================================================
+   S_KWH — Maîtriser le kWh
+   ============================================================ */
+.s-kwh{padding:clamp(80px,11vh,130px) var(--pad);border-top:1px solid var(--line);background:var(--ink-900);position:relative;overflow:hidden;}
+.s-kwh::before{content:'';position:absolute;inset:0;background:radial-gradient(70% 50% at 28% 60%,rgba(0,120,255,.04),transparent 55%);pointer-events:none;}
+.kwh-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;margin-top:clamp(48px,6vh,80px);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+.kwh-cell{padding:clamp(24px,3vw,36px) clamp(20px,2.5vw,28px);background:var(--ink-850);position:relative;overflow:hidden;transition:background .25s;}
+.kwh-cell:hover{background:var(--ink-800);}
+.kwh-cell::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kwh-cell.kc-solar::after{background:linear-gradient(90deg,#2060ff,#60a0ff);}
+.kwh-cell.kc-batt::after{background:linear-gradient(90deg,#c05000,#ff9040);}
+.kwh-cell.kc-ems::after{background:linear-gradient(90deg,#0090e0,#40c8ff);}
+.kwh-cell.kc-contrat::after{background:linear-gradient(90deg,#806000,#ffcc00);}
+.kwh-num{font-family:var(--font-mono);font-size:clamp(32px,3.5vw,46px);font-weight:500;color:var(--lum);letter-spacing:-.03em;line-height:1;margin-bottom:4px;}
+.kwh-unit{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);letter-spacing:.1em;margin-bottom:16px;}
+.kwh-title{font-family:var(--font-display);font-weight:600;font-size:21px;color:var(--fg);margin-bottom:10px;line-height:1.1;}
+.kwh-desc{font-size:13.5px;color:var(--fg-soft);line-height:1.55;margin:0;}
+
+/* ============================================================
+   S_INTERLOCUTEUR — 1 seul partenaire
+   ============================================================ */
+.s-one{padding:clamp(80px,11vh,130px) var(--pad);border-top:1px solid var(--line);background:var(--ink-900);}
+.one-layout{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:center;margin-top:clamp(48px,6vh,80px);}
+.one-providers{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.one-provider{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--ink-850);position:relative;}
+.one-provider .op-name{font-size:14px;font-weight:500;color:var(--fg-soft);margin-bottom:4px;}
+.one-provider .op-pain{font-size:12px;color:var(--fg-faint);line-height:1.4;}
+.one-provider::after{content:'×';position:absolute;top:10px;right:12px;font-size:18px;color:rgba(255,80,80,.5);}
+.one-vs{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:24px;padding:20px;border:1px solid var(--line-strong);border-radius:12px;background:rgba(255,255,255,.02);}
+.one-vs .ov-old{text-align:center;color:var(--fg-dim);}
+.one-vs .ov-old span{display:block;font-family:var(--font-mono);font-size:28px;color:rgba(255,100,100,.7);}
+.one-vs .ov-arr{font-size:24px;color:var(--fg-ghost);}
+.one-vs .ov-new{text-align:center;}
+.one-vs .ov-new span{display:block;font-family:var(--font-mono);font-size:38px;font-weight:500;color:var(--lum);}
+.one-list{display:flex;flex-direction:column;gap:16px;margin-top:28px;}
+.one-item{display:flex;align-items:flex-start;gap:16px;}
+.one-item .oi-num{font-family:var(--font-mono);font-size:11px;color:var(--fg-ghost);letter-spacing:.12em;min-width:28px;padding-top:2px;}
+.one-item .oi-text h4{font-size:17px;font-weight:500;color:var(--fg);margin:0 0 4px;}
+.one-item .oi-text p{font-size:14px;color:var(--fg-soft);margin:0;line-height:1.5;}
+
+/* ============================================================
+   S_RSE — Angle RSE (secondaire)
+   ============================================================ */
+.s-rse{padding:clamp(60px,8vh,100px) var(--pad);border-top:1px solid var(--line);background:var(--ink-900);}
+.rse-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.rse-cell{padding:28px 24px;background:var(--ink-850);}
+.rse-cell .rc-ico{font-size:22px;margin-bottom:12px;opacity:.7;}
+.rse-cell .rc-val{font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--lum);margin-bottom:4px;}
+.rse-cell .rc-label{font-size:13px;color:var(--fg-soft);line-height:1.5;}
+
+@media(max-width:1100px){
+  .kwh-grid{grid-template-columns:1fr 1fr;}
+  .flotte-layout{grid-template-columns:1fr;}
+  .one-layout{grid-template-columns:1fr;}
+}
+@media(max-width:760px){
+  .kwh-grid{grid-template-columns:1fr;}
+  .rse-inner{grid-template-columns:1fr;}
+  .one-providers{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════
+     HEADER STICKY
+════════════════════════════════════════════════════ -->
+<header class="site-header" id="siteHeader">
+  <a class="wordmark" href="/">OTO<b>NOM</b></a>
+  <nav class="hd-nav">
+    <a href="#solutions">Solutions</a>
+    <a href="#methode">Méthode</a>
+    <a href="#simulateurs">Simulateurs</a>
+    <a href="#ressources">Ressources</a>
+  </nav>
+  <div class="hd-right">
+    <a class="hd-login" href="#">Se connecter</a>
+    <a class="btn btn-primary btn-sm" href="#audit">Réserver mon audit gratuit <span class="arrow">→</span></a>
+    <button class="burger" aria-label="Menu" id="burgerBtn"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#solutions">Solutions</a>
+  <a href="#methode">Méthode</a>
+  <a href="#simulateurs">Simulateurs</a>
+  <a href="#ressources">Ressources</a>
+  <a href="#">Se connecter</a>
+  <a class="btn btn-primary" href="#audit">Réserver mon audit gratuit →</a>
+</div>
+
+<main>
+
+<!-- ════════════════════════════════════════════════════
+     S1 — HERO BÂTIMENT 3D
+════════════════════════════════════════════════════ -->
+<section class="s-hero" id="sHero" aria-label="Explorez votre site">
+  <div class="stage" id="hStage">
+    <div class="world" id="hWorld"></div>
+  </div>
+
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="bar"></span><span>Explorez votre site</span></div>
+    <h1>Flottes, énergie, fiscalité : <span class="lit">tout est lié</span>.</h1>
+    <p class="lede">Cliquez sur chaque pôle du bâtiment — on chiffre les économies, les aides et le financement. La flotte, c'est toujours le premier chantier.</p>
+    <div class="ticker"><span class="val" id="hTickVal">≈ 192 500 €</span><span>d'économies&nbsp;/ an identifiées sur ce site type</span></div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#audit">Réserver mon audit gratuit <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="#simulateurs">Simuler mes économies</a>
+    </div>
+    <div class="hint"><span class="kbd">glissez</span>&nbsp;pour pivoter · <span class="kbd">survolez</span>&nbsp;un pôle</div>
+  </div>
+
+  <div class="hero-controls">
+    <button class="ctl" id="hExplodeBtn"><span class="sw"></span>Vue éclatée</button>
+    <button class="ctl" id="hRotateBtn"><span class="sw"></span>Rotation auto</button>
+  </div>
+
+  <div class="hero-legend" id="hLegend"></div>
+  <div class="hero-mlist" id="hMlist"></div>
+  <div class="hero-scrim" id="hScrim"></div>
+
+  <!-- Zone tooltip (hover card) -->
+  <div class="zone-tip" id="hZoneTip">
+    <div class="zt-head"><span class="zt-lbl" id="ztLbl"></span><span class="zt-total" id="ztTotal"></span></div>
+    <div class="zt-tag" id="ztTag"></div>
+    <ul class="zt-list" id="ztList"></ul>
+    <a class="zt-cta" href="#audit" id="ztCta">Auditer ce pôle →</a>
+  </div>
+
+  <aside class="hero-detail" id="hDetail">
+    <div class="dhead">
+      <button class="dclose" id="hDclose" aria-label="Fermer">✕</button>
+      <div class="dposte"><span class="ic"></span><span id="hDposte">—</span></div>
+      <h3 id="hDtitle">—</h3>
+      <p class="ddesc" id="hDdesc">—</p>
+    </div>
+    <div class="dbody">
+      <div class="hero-metric"><span class="big" id="hDbig">—</span><span class="unit2" id="hDbigunit">€/an</span></div>
+      <p class="hero-sub" id="hDbigsub">Économie estimée sur ce poste</p>
+      <div class="mgrid" id="hDmgrid"></div>
+      <div class="bars" id="hDbars"></div>
+      <a class="dcta" href="#audit">Auditer ce poste <span>→</span></a>
+      <a class="dsecond" href="#methode">Voir la méthode OTONOM sur ce levier</a>
+    </div>
+  </aside>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S_FLOTTE — Flottes, premier chantier
+════════════════════════════════════════════════════ -->
+<section class="s-flotte" id="solutions" aria-label="Flottes en transition">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>Flotte — priorité N°1</span></div>
+  <div class="flotte-layout">
+    <div class="flotte-intro">
+      <h2 class="section-h reveal d1">La flotte, c'est toujours<br><span class="lit">le premier chantier</span>.</h2>
+      <p class="section-sub reveal d2">Les aides d'État, la fiscalité et le TCO électrique rendent la transition flotte rentable avant même le premier kWh solaire.</p>
+      <div class="flotte-kpi reveal d3">
+        <div class="flotte-kpi-row">
+          <div><div class="fk-val">40 k€</div><div class="fk-tag">par camion</div></div>
+          <div class="fk-label">Bonus État sur les poids lourds électriques — aide directe, non remboursable.</div>
+        </div>
+        <div class="flotte-kpi-row">
+          <div><div class="fk-val">−28%</div><div class="fk-tag">TCO / VUL</div></div>
+          <div class="fk-label">Coût total de détention sur 4 ans pour un VUL électrique vs diesel (ADEME, constructeurs).</div>
+        </div>
+        <div class="flotte-kpi-row">
+          <div><div class="fk-val">0 €</div><div class="fk-tag">TVS annuelle</div></div>
+          <div class="fk-label">Exonération totale de la Taxe sur les Véhicules de Société pour tous les véhicules électriques.</div>
+        </div>
+        <div class="flotte-kpi-row">
+          <div><div class="fk-val">−70%</div><div class="fk-tag">base AEN</div></div>
+          <div class="fk-label">Abattement sur l'avantage en nature d'un VE rechargé sur le lieu de travail (jusqu'à fin 2027).</div>
+        </div>
+      </div>
+      <div class="flotte-cta reveal d4">
+        <a class="btn btn-primary" href="#audit">Simuler ma flotte <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="#simulateurs">Calculer mon TCO</a>
+      </div>
+    </div>
+    <div class="flotte-cards reveal d2">
+      <div class="flotte-card fc-truck">
+        <div class="fc-top">
+          <div class="fc-name">Poids lourds</div>
+          <span class="fc-badge blue">Priorité aides</span>
+        </div>
+        <p class="fc-desc">Le segment avec le plus de soutien public. Les aides se cumulent — bonus, ADVENIR Pro, CEE transport, appels à projets ADEME.</p>
+        <ul class="fc-items">
+          <li>Bonus écologique jusqu'à 40 000 € / véhicule</li>
+          <li>Recharge DC 150–350 kW sur site logistique</li>
+          <li>Aide au raccordement électrique ENEDIS</li>
+          <li>Supervision des bornes en temps réel</li>
+        </ul>
+      </div>
+      <div class="flotte-card fc-van">
+        <div class="fc-top">
+          <div class="fc-name">VUL — Camionnettes</div>
+          <span class="fc-badge green">TCO −28%</span>
+        </div>
+        <p class="fc-desc">Le VUL électrique est rentable sans aide. Avec les aides cumulées, le TCO descend encore. Recharge rapide DC 80 kW en 1h.</p>
+        <ul class="fc-items">
+          <li>Autonomie 300–400 km selon modèle</li>
+          <li>Entretien −40% vs thermique (ADEME)</li>
+          <li>Recharge DC 80 kW — 80% en 45 min</li>
+          <li>Télématique embarquée EMS native</li>
+        </ul>
+      </div>
+      <div class="flotte-card fc-vp">
+        <div class="fc-top">
+          <div class="fc-name">VP collaborateurs</div>
+          <span class="fc-badge purple">AEN −70%</span>
+        </div>
+        <p class="fc-desc">Le levier fiscal le plus rapide à activer. L'AEN réduit + badge de charge sur site = avantage employeur immédiat, zéro charge RH.</p>
+        <ul class="fc-items">
+          <li>Base AEN réduite de 70% pour VE sur site</li>
+          <li>Badge de charge individuel — décompte auto</li>
+          <li>Bornes AC 7–22 kW nuit — zéro surcoût</li>
+          <li>Reporting URSSAF & SIRH intégré</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S_KWH — Maîtrisez votre kWh
+════════════════════════════════════════════════════ -->
+<section class="s-kwh" aria-label="Maîtrisez votre kWh">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>Énergie</span></div>
+  <h2 class="section-h reveal d1">Maîtrisez<br><span class="lit">chaque kWh</span>.</h2>
+  <p class="section-sub reveal d2">Solaire, stockage, pilotage EMS et négociation contrats — quatre leviers combinés pour contrôler le prix réel du kWh.</p>
+  <div class="kwh-grid">
+    <div class="kwh-cell kc-solar reveal">
+      <div class="kwh-num">−34%</div>
+      <div class="kwh-unit">sur la facture énergie</div>
+      <div class="kwh-title">Solaire — Toiture & ombrières</div>
+      <p class="kwh-desc">≈ 1 100 m² de panneaux en toiture + ombrières PV au parking. Production directement autoconsommée via l'EMS — le surplus est revendu ou stocké. Financement tiers-investisseur possible : 0 € d'apport.</p>
+    </div>
+    <div class="kwh-cell kc-batt reveal d1">
+      <div class="kwh-num">450 kWh</div>
+      <div class="kwh-unit">capacité stockage BESS</div>
+      <div class="kwh-title">Batterie BESS — Peak shaving</div>
+      <p class="kwh-desc">La batterie charge aux heures creuses (énergie réseau bon marché) et au solaire. Elle décharge aux heures de pointe, efface les pics de puissance et réduit la TURPE. ROI typique : 4–6 ans.</p>
+    </div>
+    <div class="kwh-cell kc-ems reveal d2">
+      <div class="kwh-num">EMS</div>
+      <div class="kwh-unit">cerveau du pilotage</div>
+      <div class="kwh-title">Système EMS — Orchestration</div>
+      <p class="kwh-desc">L'Energy Management System orchestre en temps réel : production solaire, état de charge batterie, tarifs réseau, besoins de recharge flotte. Chaque kWh est affecté au meilleur usage au meilleur prix.</p>
+    </div>
+    <div class="kwh-cell kc-contrat reveal d3">
+      <div class="kwh-num">−23%</div>
+      <div class="kwh-unit">sur le prix du kWh</div>
+      <div class="kwh-title">Contrats énergie — Négociation</div>
+      <p class="kwh-desc">On lance un appel d'offres groupé auprès de 8+ fournisseurs. Le boîtier réseau en façade consolide la supervision des contrats. Combiné à l'optimisation HC/HP, le gain moyen est de −23% sur le kWh réseau.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S_ONE — 1 seul interlocuteur
+════════════════════════════════════════════════════ -->
+<section class="s-one" aria-label="Un seul interlocuteur">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>Notre modèle</span></div>
+  <div class="one-layout">
+    <div>
+      <h2 class="section-h reveal d1">30 prestataires.<br><span class="lit">Un seul interlocuteur.</span></h2>
+      <p class="section-sub reveal d2">OTONOM est la passerelle entre votre entreprise et tous les acteurs de la transition. Vous ne gérez qu'un seul contrat, une seule facture, un seul bilan mensuel.</p>
+      <div class="one-list reveal d3">
+        <div class="one-item"><div class="oi-num">01</div><div class="oi-text"><h4>On sélectionne</h4><p>Installateurs certifiés IRVE, énergéticiens, financeurs, bureaux d'études — on appel d'offres chaque prestation pour votre site.</p></div></div>
+        <div class="one-item"><div class="oi-num">02</div><div class="oi-text"><h4>On coordonne</h4><p>Plannings, chantiers, raccordements Enedis, mises en service, réceptions — un seul chef de projet côté OTONOM.</p></div></div>
+        <div class="one-item"><div class="oi-num">03</div><div class="oi-text"><h4>On optimise en continu</h4><p>Reporting mensuel des économies, ajustements tarifaires, suivi des aides. On reste actif bien après la mise en service.</p></div></div>
+      </div>
+    </div>
+    <div class="reveal d2">
+      <div class="one-providers">
+        <div class="one-provider"><div class="op-name">Installateur IRVE</div><div class="op-pain">Qualification, prix, délais</div></div>
+        <div class="one-provider"><div class="op-name">Énergéticien</div><div class="op-pain">Contrat, tarification</div></div>
+        <div class="one-provider"><div class="op-name">Financeur / leasing</div><div class="op-pain">Conditions, garanties</div></div>
+        <div class="one-provider"><div class="op-name">Bureau d'études</div><div class="op-pain">Études de faisabilité</div></div>
+        <div class="one-provider"><div class="op-name">Mainteneur</div><div class="op-pain">SLA, réactivité</div></div>
+        <div class="one-provider"><div class="op-name">Raccordement Enedis</div><div class="op-pain">Délais, puissance</div></div>
+      </div>
+      <div class="one-vs">
+        <div class="ov-old"><span>6+</span>contrats à gérer</div>
+        <div class="ov-arr">→</div>
+        <div class="ov-new"><span>1</span><span style="font-size:14px;color:var(--fg-dim);font-family:var(--font-text);font-weight:400;">interlocuteur OTONOM</span></div>
+      </div>
+      <div style="margin-top:20px;text-align:right;">
+        <a class="btn btn-primary" href="#audit">Réserver mon audit gratuit <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S_RSE — Angle RSE (secondaire)
+════════════════════════════════════════════════════ -->
+<section class="s-rse" aria-label="Impact RSE">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>Impact global</span></div>
+  <h2 class="section-h reveal d1" style="font-size:clamp(32px,3.5vw,44px);margin-bottom:28px;">Parce qu'on pense aussi <span class="lit">à la suite</span>.</h2>
+  <div class="rse-inner reveal d2">
+    <div class="rse-cell">
+      <div class="rc-ico">🌿</div>
+      <div class="rc-val">−140 t CO₂/an</div>
+      <div class="rc-label">Sur un site type avec solaire + flotte électrifiée. Reportable dans votre bilan GES Scope 1 & 2.</div>
+    </div>
+    <div class="rse-cell">
+      <div class="rc-ico">👥</div>
+      <div class="rc-val">Avantage employeur</div>
+      <div class="rc-label">Recharge gratuite sur site, badge individuel, VE en leasing optimisé — un argument RH concret pour attirer et retenir.</div>
+    </div>
+    <div class="rse-cell">
+      <div class="rc-ico">📊</div>
+      <div class="rc-val">Reporting intégré</div>
+      <div class="rc-label">Tableau de bord mensuel : économies réalisées, CO₂ évité, état des aides. Prêt pour vos obligations CSRD.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S2 — ORCHESTRATION "Cinq prestataires"
+════════════════════════════════════════════════════ -->
+<section class="s-orches" id="methode" aria-label="Un seul partenaire">
+  <div class="orches-vign"></div>
+  <div class="orches-head">
+    <div class="left">
+      <div class="section-eyebrow reveal"><span class="bar"></span><span>Orchestration</span></div>
+      <h2 class="section-h reveal d1">Cinq prestataires.<br>Ou <span class="lit">un seul partenaire</span>.</h2>
+      <p class="section-sub reveal d2">Installateurs, énergéticiens, financeurs, mainteneurs : OTONOM les coordonne tous. Vous, vous ne parlez qu'à une seule personne.</p>
+    </div>
+    <div class="right reveal d3">
+      <a class="btn btn-primary" href="#audit">Réserver mon audit gratuit <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="#methode">Notre méthode</a>
+    </div>
+  </div>
+  <div class="orches-diagram">
+    <svg id="orchesSvg" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMid meet">
+      <g id="oChaosLines"></g>
+      <g id="oChaosNodes"></g>
+      <line class="orches-divider" x1="720" y1="24" x2="720" y2="356"/>
+      <g class="arrow-badge" transform="translate(720,190)"><circle r="22"/><path d="M-7,-7 L7,0 L-7,7 M-9,0 H7"/></g>
+      <g id="oOrderLines"></g>
+      <g id="oOrderNodes"></g>
+      <text class="orches-grp-lbl before" x="80" y="26">Aujourd'hui</text>
+      <text class="orches-grp-sub" x="80" y="42">5 contrats · 5 factures · 5 numéros</text>
+      <text class="orches-grp-lbl after" x="780" y="26">Avec OTONOM</text>
+      <text class="orches-grp-sub" x="780" y="42">1 contrat · 1 interlocuteur · 1 bilan</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S3 — LES 3 PILIERS
+════════════════════════════════════════════════════ -->
+<section class="section s-pillars" id="methode" aria-label="Les 3 piliers">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>Notre approche</span></div>
+  <h2 class="section-h reveal d1">Trois leviers.<br><span class="lit">Un seul interlocuteur.</span></h2>
+  <div class="pillars-grid">
+    <div class="pillar reveal">
+      <div class="pillar-num">01 / 03</div>
+      <h3 class="pillar-title">Piloter</h3>
+      <p class="pillar-body">On sélectionne, mandate et coordonne vos prestataires certifiés — installateurs, énergéticiens, mainteneurs. Vous validez les étapes clés, on gère le reste.</p>
+    </div>
+    <div class="pillar reveal d1">
+      <div class="pillar-num">02 / 03</div>
+      <h3 class="pillar-title">Optimiser</h3>
+      <p class="pillar-body">Chaque projet est arbitré financièrement (CEE, ADVENIR, tiers-investisseur), fiscalement (TVS, AEN) et énergétiquement (autoconsommation, pilotage horaire). On capte toutes les aides applicables.</p>
+    </div>
+    <div class="pillar reveal d2">
+      <div class="pillar-num">03 / 03</div>
+      <h3 class="pillar-title">Déléguer</h3>
+      <p class="pillar-body">Du diagnostic au suivi en exploitation, vous avez un seul contrat, un seul bilan mensuel, un seul numéro. La complexité disparaît de votre côté.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S4 — PERSONAS
+════════════════════════════════════════════════════ -->
+<section class="section s-personas" aria-label="Pour qui">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>Pour qui</span></div>
+  <h2 class="section-h reveal d1">Ça parle à tout le monde.<br><span class="lit">Dans votre langue.</span></h2>
+  <div class="personas-grid">
+    <a class="persona-card reveal" href="#">
+      <div class="persona-role">Décisionnaire</div>
+      <div class="persona-name">Dirigeant</div>
+      <p class="persona-pitch">Votre transition avance sans vous distraire de votre cœur de métier. Un point de contact, un bilan mensuel, zéro charge opérationnelle.</p>
+      <div class="persona-cta">Voir mon profil <span>→</span></div>
+    </a>
+    <a class="persona-card reveal d1" href="#">
+      <div class="persona-role">Direction financière</div>
+      <div class="persona-name">DAF</div>
+      <p class="persona-pitch">CEE, ADVENIR, tiers-investisseur, AEN, TVS — on identifie et capte chaque aide. Résultat : le TCO le plus bas et le reste à charge chiffré à l'avance.</p>
+      <div class="persona-cta">Voir mon profil <span>→</span></div>
+    </a>
+    <a class="persona-card reveal d2" href="#">
+      <div class="persona-role">Ressources humaines</div>
+      <div class="persona-name">DRH</div>
+      <p class="persona-pitch">Bornes pilotées, flotte VE, recharge à domicile, avantage en nature optimisé. La mobilité durable devient un avantage employeur sans friction RH.</p>
+      <div class="persona-cta">Voir mon profil <span>→</span></div>
+    </a>
+    <a class="persona-card reveal d3" href="#">
+      <div class="persona-role">Exploitation</div>
+      <div class="persona-name">Services généraux</div>
+      <p class="persona-pitch">On coordonne le chantier de A à Z — plannings, intervenants, mises en service. Vous supervisez ; on ne multiplie pas les corps d'état sur votre site.</p>
+      <div class="persona-cta">Voir mon profil <span>→</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S5 — MÉTHODE A→Z
+════════════════════════════════════════════════════ -->
+<section class="section s-method" aria-label="Méthode A vers Z">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>Méthode</span></div>
+  <h2 class="section-h reveal d1">De A à Z.<br><span class="lit">Sans rien laisser au hasard.</span></h2>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-n">01</div>
+      <div class="step-title">Diagnostic gratuit</div>
+      <p class="step-body">Audit de vos consommations, de votre flotte et de votre site. On chiffre les économies accessibles et on identifie toutes les aides captables.</p>
+    </div>
+    <div class="step reveal d1">
+      <div class="step-n">02</div>
+      <div class="step-title">Plan chiffré</div>
+      <p class="step-body">Feuille de route priorisée avec ROI, reste à charge réel, sources de financement et calendrier. Zéro surprise budgétaire.</p>
+    </div>
+    <div class="step reveal d2">
+      <div class="step-n">03</div>
+      <div class="step-title">Coordination</div>
+      <p class="step-body">On sélectionne les prestataires certifiés, on gère les appels d'offres, les contrats et les plannings. Un seul point de contact pour vous.</p>
+    </div>
+    <div class="step reveal d3">
+      <div class="step-n">04</div>
+      <div class="step-title">Déploiement</div>
+      <p class="step-body">Installations, raccordements, mises en service et réception des travaux. On pilote chaque corps d'état et on valide chaque étape.</p>
+    </div>
+    <div class="step reveal d4">
+      <div class="step-n">05</div>
+      <div class="step-title">Optimisation continue</div>
+      <p class="step-body">Pilotage en exploitation, reporting mensuel des économies, ajustements tarifaires et suivi des aides. On reste actif après la mise en service.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S6 — SIMULATEURS
+════════════════════════════════════════════════════ -->
+<section class="section s-sims" id="simulateurs" aria-label="Simulateurs">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>Simulateurs</span></div>
+  <h2 class="section-h reveal d1">Calculez votre potentiel.<br><span class="lit">Avant l'audit.</span></h2>
+  <p class="section-sub reveal d2">Estimations indicatives. L'audit gratuit affine chaque chiffre à votre situation réelle.</p>
+  <div class="sims-grid">
+    <div class="sim-card reveal">
+      <div class="sim-tag">Fiscalité · Flotte</div>
+      <div class="sim-title">Avantage en nature VE</div>
+      <p class="sim-desc">Calculez l'économie fiscale générée par l'abattement de 70 % sur la base de calcul de l'AEN pour les VE rechargés sur site (jusqu'à fin 2027).</p>
+      <a class="btn btn-ghost btn-sm sim-cta" href="#">Simuler <span class="arrow">→</span></a>
+    </div>
+    <div class="sim-card reveal d1">
+      <div class="sim-tag">Flotte · Coût total</div>
+      <div class="sim-title">TCO + fiscalité</div>
+      <p class="sim-desc">Comparez le coût total de détention thermique vs électrique sur 3 ans : carburant, entretien, TVS, assurance, recharge. Lequel l'emporte pour votre flotte ?</p>
+      <a class="btn btn-ghost btn-sm sim-cta" href="#">Simuler <span class="arrow">→</span></a>
+    </div>
+    <div class="sim-card reveal d2">
+      <div class="sim-tag">Recharge · Site</div>
+      <div class="sim-title">Audit recharge</div>
+      <p class="sim-desc">Estimez le nombre de bornes adaptées à votre flotte et vos horaires, les aides ADVENIR captables et la puissance électrique nécessaire.</p>
+      <a class="btn btn-ghost btn-sm sim-cta" href="#">Simuler <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S7 — RÉASSURANCE
+════════════════════════════════════════════════════ -->
+<section class="section s-proof" aria-label="Données de réassurance">
+  <div class="proof-intro">
+    <div class="section-eyebrow reveal"><span class="bar"></span><span>Données clés</span></div>
+    <h2 class="section-h reveal d1">Des leviers concrets,<br><span class="lit">chiffrés à l'avance</span>.</h2>
+    <p class="section-sub reveal d2">Tous les chiffres ci-dessous sont issus de dispositifs légaux ou de constats terrain. L'audit précise ce qui s'applique à votre site.</p>
+  </div>
+  <div class="proof-grid">
+    <div class="proof-cell reveal">
+      <div class="proof-num"><span class="count-up" data-target="0" data-prefix="" data-suffix=" €">0 €</span></div>
+      <div class="proof-label">TVS (taxe annuelle sur les véhicules de société) pour un véhicule électrique. Exonération légale, CGI art. 1010.</div>
+      <div class="proof-source">Source : CGI art. 1010</div>
+    </div>
+    <div class="proof-cell reveal d1">
+      <div class="proof-num">jusqu'à<br><span class="count-up" data-target="70" data-prefix="−" data-suffix="%">−0%</span></div>
+      <div class="proof-label">Sur la facture de recharge avec un pilotage intelligent (tarif heures creuses + optimisation solaire).</div>
+      <div class="proof-source">Source : constat terrain</div>
+    </div>
+    <div class="proof-cell reveal d2">
+      <div class="proof-num">jusqu'à<br><span class="count-up" data-target="40" data-prefix="−" data-suffix="%">−0%</span></div>
+      <div class="proof-label">Sur les coûts d'entretien d'un véhicule électrique vs thermique (moins de fluides, freinage régénératif).</div>
+      <div class="proof-source">Source : ADEME, constructeurs</div>
+    </div>
+    <div class="proof-cell reveal d3">
+      <div class="proof-num"><span class="count-up" data-target="70" data-prefix="" data-suffix="%">0%</span></div>
+      <div class="proof-label">Abattement sur la base de calcul de l'avantage en nature pour un VE rechargé sur le lieu de travail (jusqu'à fin 2027).</div>
+      <div class="proof-source">Source : URSSAF · BOSS 2023</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S8 — FAQ
+════════════════════════════════════════════════════ -->
+<section class="section s-faq" id="ressources" aria-label="Questions fréquentes">
+  <div class="section-eyebrow reveal"><span class="bar"></span><span>FAQ</span></div>
+  <div class="faq-cols">
+    <div class="faq-side reveal">
+      <h2 class="section-h" style="font-size:clamp(34px,3.5vw,46px);">Questions<br><span class="lit">fréquentes</span>.</h2>
+      <p>Pas trouvé votre réponse ? Notre équipe vous répond dans la journée.</p>
+      <a class="btn btn-ghost btn-sm" href="#audit">Poser une question →</a>
+    </div>
+    <div class="faq-list reveal d1" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     S9 — CTA FINAL
+════════════════════════════════════════════════════ -->
+<section class="s-cta" id="audit" aria-label="Prendre rendez-vous">
+  <div class="cta-pretitle reveal">Première étape</div>
+  <h2 class="cta-h reveal d1">Votre transition commence<br>par un <span class="lit">diagnostic gratuit</span>.</h2>
+  <p class="cta-sub reveal d2">En 45 minutes, on chiffre les économies accessibles sur votre site et votre flotte — et on vous propose un plan d'action sans engagement.</p>
+  <div class="cta-actions reveal d3">
+    <a class="btn btn-primary" href="#">Réserver mon audit gratuit <span class="arrow">→</span></a>
+    <a class="btn btn-ghost" href="#simulateurs">Simuler d'abord</a>
+  </div>
+  <p class="cta-note reveal d4">Gratuit · Sans engagement · Réponse sous 24 h</p>
+</section>
+
+</main>
+
+<!-- ════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="wordmark">OTO<b>NOM</b></div>
+      <p>Orchestrateur de la transition énergie-mobilité pour les entreprises. Un seul interlocuteur, de A à Z.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <ul>
+        <li><a href="#">Recharge & bornes</a></li>
+        <li><a href="#">Solaire & stockage</a></li>
+        <li><a href="#">Flotte électrique</a></li>
+        <li><a href="#">Efficacité énergétique</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Ressources</h4>
+      <ul>
+        <li><a href="#">Méthode OTONOM</a></li>
+        <li><a href="#simulateurs">Simulateurs</a></li>
+        <li><a href="#">Guides & cas clients</a></li>
+        <li><a href="#audit">Réserver un audit</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal">© 2025 OTONOM · <a href="#">Mentions légales</a> · <a href="#">Politique de confidentialité</a></div>
+    <div class="footer-legal">Fait en France</div>
+  </div>
+</footer>
+
+<div class="grain"></div>
+
+<!-- JSON-LD FAQPage -->
+<script type="application/ld+json" id="faqJsonLd"></script>
+
+<script>
+(function () {
+'use strict';
+
+/* ══════════════════════════════════════════════════════════
+   3D SCENE DATA
+══════════════════════════════════════════════════════════ */
+var LAYERS = [
+  { id:'ground',  label:'Terrain & voirie',     w:860, d:520, t:12,  zc:0,   ze:0,   surf:'surf-asphalt' },
+  { id:'rdc',     label:'R.D.C. — Accueil / EMS', w:480, d:280, t:72,  zc:22,  ze:200, surf:'surf-rdc' },
+  { id:'r1',      label:'R+1 — Compta & Fiscal', w:480, d:280, t:68,  zc:108, ze:388, surf:'surf-r1' },
+  { id:'r2',      label:'R+2 — RH & Direction',  w:480, d:280, t:68,  zc:190, ze:572, surf:'surf-r2' },
+  { id:'toit',    label:'Toiture technique',     w:480, d:280, t:22,  zc:272, ze:756, surf:'surf-roof' }
+];
+var ZONES = [
+  { id:'flotte', label:'FLOTTE', zclass:'zh-flotte', layer:'ground', cx:120, cy:430, lift:60,
+    totalFmt:'−30%', tagline:'Camions, VUL, VP — chaque véhicule optimisé',
+    items:['Poids lourds : bonus État jusqu\'à 40 000 €/véhicule','VUL : TCO −28% vs diesel sur 4 ans','VP collaborateur : AEN −70% base calcul'],
+    zone:'Flotte & véhicules', title:'Flotte électrique & TCO', saving:38000,
+    big:'−30%', bigunit:'TCO moyen', bigsub:'Sur l\'ensemble de la flotte électrifiée',
+    desc:'On pilote la bascule par vagues selon le kilométrage réel. Poids lourds, VUL et VP : chaque catégorie a ses aides, sa fiscalité et ses bornes dédiées.',
+    metrics:[['Poids lourds','Bonus 40k€',1],['VUL','TCO −28%',0],['VP','AEN −70%',0],['TVS','0 €/véh.',0]],
+    bars:[['Aides & bonus',44],['TCO exploitation',38]] },
+  { id:'recharge', label:'BORNES & EMS', zclass:'zh-recharge', layer:'ground', cx:530, cy:370, lift:80,
+    totalFmt:'−70%', tagline:'AC collaborateurs · DC rapide · Supervision EMS',
+    items:['Bornes AC 7-22 kW — recharge lente nuit (collaborateurs)','DC 50-150 kW — charge rapide ponctuelle VP/VUL','DC 150-350 kW — flottes à fort kilométrage','EMS : cerveau qui orchestre solaire, réseau, batterie'],
+    zone:'Recharge & pilotage', title:'Infrastructure de recharge pilotée', saving:22000,
+    big:'−70%', bigunit:'coût de recharge', bigsub:'Vs recharge réseau non pilotée',
+    desc:'L\'EMS optimise chaque kWh : recharge pendant les heures creuses, priorité sur la production solaire, effacement lors des pointes tarifaires.',
+    metrics:[['Bornes AC','×18 sites',1],['Bornes DC','×8 rapides',0],['EMS','Temps réel',0],['ADVENIR','960€/pt',0]],
+    bars:[['Heures creuses + solaire',62],['Effacement pointes',38]] },
+  { id:'solaire', label:'SOLAIRE', zclass:'zh-solaire', layer:'toit', cx:240, cy:140, lift:50,
+    totalFmt:'48 000', tagline:'PV toiture + ombrières parking — tiers-investisseur',
+    items:['≈ 1 100 m² toiture plate exploitable','Ombrières parking : solaire + ombre + recharge','Tiers-investisseur : 0 € d\'apport'],
+    zone:'Solaire & ombrières', title:'Production PV & autoconsommation', saving:48000,
+    big:'48 000', bigunit:'€/an', bigsub:'Autoconsommation + revente surplus',
+    desc:'Panneaux en toiture + ombrières : la production solaire couvre 34% de la facture et alimente directement les bornes de recharge via l\'EMS.',
+    metrics:[['Toiture','180 MWh/an',1],['Ombrières','95 MWh/an',0],['Couverture','−34% facture',0],['CO₂ évité','140 t/an',0]],
+    bars:[['Autoconsommation directe',58],['Stockage batterie',22]] },
+  { id:'batterie', label:'STOCKAGE & RÉSEAU', zclass:'zh-batterie', layer:'ground', cx:730, cy:170, lift:50,
+    totalFmt:'−23%', tagline:'Batterie BESS + négociation contrats énergie',
+    items:['Batterie stocke le PV + énergie nocturne bon marché','Effacement aux heures de pointe — zéro surcoût réseau','Négociation multi-acteurs : −23% sur le prix du kWh'],
+    zone:'Stockage & contrat énergie', title:'BESS + optimisation kWh', saving:22000,
+    big:'−23%', bigunit:'sur le kWh', bigsub:'Négociation contrats + effacement pointes',
+    desc:'Le boîtier réseau en façade pilote vos contrats avec 8 fournisseurs simultanément. La batterie BESS stocke aux heures creuses, injecte aux heures de pic.',
+    metrics:[['Batterie BESS','450 kWh',1],['Puissance','200 kW',0],['Contrat','−23% kWh',0],['Payback','4,2 ans',0]],
+    bars:[['Effacement pointes',45],['Arbitrage HC/HP',55]] },
+  { id:'rh', label:'RH & AEN', zclass:'zh-rh', layer:'r2', cx:240, cy:140, lift:42,
+    totalFmt:'−70%', tagline:'Avantages en Nature optimisés — zéro friction',
+    items:['Base AEN réduite de 70% pour VE rechargé sur site','Badge de charge collaborateur — décompte automatique','Déclarations fiscales automatisées dans votre SIRH'],
+    zone:'RH — R+2', title:'Avantages en Nature & fiscalité VE', saving:18000,
+    big:'−70%', bigunit:'base calcul AEN', bigsub:'Abattement légal URSSAF jusqu\'à fin 2027',
+    desc:'Chaque collaborateur dispose d\'un badge de charge individuel. L\'AEN est calculé automatiquement sur la base réduite. Zéro charge RH supplémentaire.',
+    metrics:[['AEN','Base −70%',1],['Badge charge','Par collaborateur',0],['Charge sociale','Optimisée',0],['Validité','→ fin 2027',0]],
+    bars:[['Économie charges sociales',62],['Gain salarial net',38]] },
+  { id:'compta', label:'COMPTA & AIDES', zclass:'zh-compta', layer:'r1', cx:240, cy:140, lift:42,
+    totalFmt:'192 500', tagline:'CEE · ADVENIR · Tiers-investisseur · TVA',
+    items:['Tiers-investisseur : financement total, 0 € d\'apport','TVA récupérable sur infrastructure de recharge','CEE + MaPrimeRénov\' + ADVENIR consolidés'],
+    zone:'Compta — R+1', title:'Subventions, fiscalité & financements', saving:84500,
+    big:'192 500', bigunit:'€/an', bigsub:'Économies totales identifiées sur ce site type',
+    desc:'On gère l\'ensemble des dossiers de financement et de subvention : CEE, ADVENIR, fiscalité TVS/AEN, tiers-investisseur solaire. Votre comptable n\'a qu\'à valider.',
+    metrics:[['CEE','Cap. disponible',1],['ADVENIR','960€/borne',0],['Tiers-inv.','0€ apport',0],['TVA','Récupérable',0]],
+    bars:[['Subventions & aides',38],['Tiers-financement',46]] }
+];
+
+/* ── DOM helpers ── */
+function el(tag,cls,css){var n=document.createElement(tag);if(cls)n.className=cls;if(css)for(var k in css)n.style[k]=css[k];return n;}
+function px(v){return v+'px';}
+
+/* ── 3D box (top + south + east face) ── */
+function box(w,d,h,cls){
+  var u=el('div','unit'+(cls?' '+cls:''));
+  u.appendChild(el('div','u-s',{width:px(w),height:px(h),left:px(-w/2),top:px(d/2),transformOrigin:'top',transform:'rotateX(-90deg)'}));
+  u.appendChild(el('div','u-e',{width:px(h),height:px(d),left:px(w/2),top:px(-d/2),transformOrigin:'left',transform:'rotateY(90deg)'}));
+  u.appendChild(el('div','u-top',{width:px(w),height:px(d),margin:px(-d/2)+' 0 0 '+px(-w/2),transform:'translateZ('+h+'px)'}));
+  return u;
+}
+
+/* ── Vehicles ── */
+function vp(cx,cy,bodyClr,cabClr){
+  var g=el('div','car');g.style.cssText='left:0;top:0;transform:translate('+cx+'px,'+cy+'px);transform-style:preserve-3d;';
+  var body=box(24,54,13);
+  body.querySelector('.u-top').style.cssText='background:'+bodyClr[0]+';';
+  body.querySelector('.u-s').style.background=bodyClr[1];
+  body.querySelector('.u-e').style.background=bodyClr[2];
+  var cab=box(17,28,11);cab.style.transform='translate(0,0) translateZ(13px)';
+  cab.querySelector('.u-top').style.background=cabClr;
+  cab.querySelector('.u-top').style.borderRadius='2px';
+  cab.querySelector('.u-s').style.background='rgba(80,120,200,.28)';
+  cab.querySelector('.u-e').style.background='rgba(60,90,160,.2)';
+  g.appendChild(body);g.appendChild(cab);
+  return g;
+}
+function van(cx,cy){
+  var g=el('div','van');g.style.cssText='left:0;top:0;transform:translate('+cx+'px,'+cy+'px);transform-style:preserve-3d;';
+  var body=box(28,70,20);
+  body.querySelector('.u-top').style.background='linear-gradient(150deg,#1a2840,#101e34)';
+  body.querySelector('.u-s').style.background='#14203a';
+  body.querySelector('.u-e').style.background='#0e1828';
+  /* windows on south face */
+  body.querySelector('.u-s').style.background='linear-gradient(90deg,#14203a 0,#14203a 6px,rgba(80,140,220,.38) 6px,rgba(80,140,220,.38) 22px,#14203a 22px)';
+  var cab=box(22,34,18);cab.style.transform='translate(0,-16px) translateZ(20px)';
+  cab.querySelector('.u-top').style.background='linear-gradient(150deg,#0c1428,#080e1e)';
+  cab.querySelector('.u-s').style.background='rgba(80,130,200,.3)';
+  cab.querySelector('.u-e').style.background='rgba(60,100,160,.22)';
+  g.appendChild(body);g.appendChild(cab);
+  return g;
+}
+function truck(cx,cy){
+  var g=el('div','truck');g.style.cssText='left:0;top:0;transform:translate('+cx+'px,'+cy+'px);transform-style:preserve-3d;';
+  /* cargo */
+  var cargo=box(46,110,28);
+  cargo.querySelector('.u-top').style.background='linear-gradient(150deg,#1e2438,#141a2c)';
+  cargo.querySelector('.u-s').style.background='#181e30';
+  cargo.querySelector('.u-e').style.background='#10162a';
+  /* logo stripe on south face */
+  cargo.querySelector('.u-s').style.background='linear-gradient(0deg,#181e30 0,#181e30 40%,rgba(255,255,255,.08) 40%,rgba(255,255,255,.08) 60%,#181e30 60%)';
+  /* cab */
+  var cab=box(36,52,26);cab.style.transform='translate(0,-26px) translateZ(28px)';
+  cab.querySelector('.u-top').style.background='linear-gradient(150deg,#141828,#0e121e)';
+  cab.querySelector('.u-s').style.background='rgba(80,130,200,.32)';
+  cab.querySelector('.u-e').style.background='rgba(60,100,160,.24)';
+  /* bumper */
+  var bump=box(40,6,6);bump.style.transform='translate(0,-26px)';
+  bump.querySelector('.u-top').style.background='#2a2e3a';
+  bump.querySelector('.u-s').style.background='#22262e';
+  g.appendChild(cargo);g.appendChild(cab);g.appendChild(bump);
+  return g;
+}
+
+/* ── EV charger ── */
+function borne(cx,cy,h,cls){
+  var b=box(10,8,h,cls);b.style.transform='translate('+cx+'px,'+cy+'px)';return b;
+}
+
+/* ── Billboard tree ── */
+function tree(cx,cy){
+  var g=el('div',null,{position:'absolute',left:'0',top:'0',transform:'translate('+cx+'px,'+cy+'px)',transformStyle:'preserve-3d'});
+  var trk=box(4,4,18);trk.querySelector('.u-top').style.background='#2a2e20';trk.querySelector('.u-s').style.background='#222618';trk.querySelector('.u-e').style.background='#1a1e12';
+  g.appendChild(trk);
+  var c=el('div',null,{position:'absolute',left:'-16px',top:'-16px',width:'36px',height:'36px',borderRadius:'50%',
+    background:'radial-gradient(circle at 38% 30%,#3a4f34,#1a2c18)',
+    boxShadow:'inset 0 -6px 12px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.5)',
+    transform:'translateZ(24px) rotateZ(calc(-1 * var(--rz,-40deg))) rotateX(-56deg)',pointerEvents:'none'});
+  g.appendChild(c);return g;
+}
+
+/* ── Build layers ── */
+var world=document.getElementById('hWorld'), decks={};
+LAYERS.forEach(function(L){
+  var layer=el('div','layer');layer.dataset.layer=L.id;
+  layer.style.setProperty('--zc',L.zc+'px');layer.style.setProperty('--ze',L.ze+'px');
+  var slab=el('div','slab');
+  slab.appendChild(el('div','face side s',{width:px(L.w),height:px(L.t),left:px(-L.w/2),top:px(L.d/2),transformOrigin:'top',transform:'rotateX(-90deg)'}));
+  slab.appendChild(el('div','face side e',{width:px(L.t),height:px(L.d),left:px(L.w/2),top:px(-L.d/2),transformOrigin:'left',transform:'rotateY(90deg)'}));
+  slab.appendChild(el('div','face top '+L.surf,{width:px(L.w),height:px(L.d),margin:px(-L.d/2)+' 0 0 '+px(-L.w/2)}));
+  layer.appendChild(slab);
+  var deck=el('div','deck',{width:px(L.w),height:px(L.d),left:'50%',top:'50%',margin:px(-L.d/2)+' 0 0 '+px(-L.w/2)});
+  layer.appendChild(deck);decks[L.id]=deck;world.appendChild(layer);
+});
+
+/* ── Ground layer — parking, canopy, vehicles, battery, network ── */
+(function(){
+  var dk=decks.ground;
+  /* Grass patches */
+  var grass=[[0,0,120,520],[740,0,120,520]];
+  grass.forEach(function(g){dk.appendChild(el('div','surf-grass',{position:'absolute',left:g[0]+'px',top:g[1]+'px',width:g[2]+'px',height:g[3]+'px'}));});
+  /* Road lines on asphalt */
+  [60,120,180].forEach(function(x){dk.appendChild(el('div',null,{position:'absolute',left:(120+x-1)+'px',top:'320px',width:'2px',height:'80px',background:'rgba(255,255,255,.1)'}));});
+  /* ── VEHICLES (left side of building) ── */
+  /* Truck (centre-left parking) */
+  dk.appendChild(truck(148, 380));
+  /* Van */
+  dk.appendChild(van(248, 398));
+  /* Electric VP (green tint) */
+  dk.appendChild(vp(338, 410, ['linear-gradient(150deg,#1a3025,#0e2018)','#122018','#0c1810'], 'linear-gradient(150deg,#0a1614,#060e0c)'));
+  /* ── EV CHARGERS ZONE (right of vehicles) ── */
+  /* AC bornes for employees — slow chargers */
+  var acPos=[[424,396],[444,396],[464,396],[484,396],[504,396]];
+  acPos.forEach(function(p){dk.appendChild(borne(p[0],p[1],26,'borne-ac'));});
+  /* DC fast chargers — for occasional quick charge */
+  var dcPos=[[424,440],[454,440]];
+  dcPos.forEach(function(p){dk.appendChild(borne(p[0],p[1],34,'borne-dc'));});
+  /* DC fleet chargers — high power */
+  dk.appendChild(borne(504,440,40,'borne-fleet'));
+  /* EMS box — the brain (slightly bigger) */
+  var ems=box(28,18,38);ems.style.transform='translate(558,440)'.replace('558','558px').replace('440','440px');
+  ems.querySelector('.u-top').style.background='linear-gradient(150deg,#0a1428,#060e1e)';
+  ems.querySelector('.u-top').style.boxShadow='0 0 18px rgba(0,150,255,.5)';
+  ems.querySelector('.u-s').style.background='#060c1e';
+  ems.querySelector('.u-e').style.background='#04081a';
+  dk.appendChild(ems);
+  /* ── CANOPY WITH SOLAR (over vehicle zone) ── */
+  var postH=72,cxo=340,cyo=408,cw=280,cd=140;
+  [[cxo-cw/2+8,cyo-cd/2+8],[cxo+cw/2-8,cyo-cd/2+8],[cxo-cw/2+8,cyo+cd/2-8],[cxo+cw/2-8,cyo+cd/2-8]].forEach(function(p){
+    var post=box(6,6,postH);post.style.transform='translate('+p[0]+'px,'+p[1]+'px)';
+    post.querySelector('.u-top').style.background='#2a2e40';post.querySelector('.u-s').style.background='#1e2234';post.querySelector('.u-e').style.background='#161a28';
+    dk.appendChild(post);
+  });
+  var canopy=el('div','solar',{position:'absolute',width:px(cw),height:px(cd),left:'0',top:'0',
+    transform:'translate('+(cxo-cw/2)+'px,'+(cyo-cd/2)+'px) translateZ('+postH+'px)',transformStyle:'preserve-3d'});
+  canopy.appendChild(el('div','panel surf-solar',{position:'absolute',inset:'0'}));
+  dk.appendChild(canopy);
+  /* ── BATTERY UNIT (BESS) — right of building ── */
+  var bess=box(60,38,48,'batt');bess.style.transform='translate(666px,144px)';dk.appendChild(bess);
+  /* Orange LED strip on BESS */
+  dk.appendChild(el('div',null,{position:'absolute',left:'666px',top:'144px',width:'60px',height:'3px',
+    background:'#ff8020',boxShadow:'0 0 12px rgba(255,120,0,.8)',transform:'translateZ(52px)'}));
+  /* ── NETWORK/CONTRACT BOX — on east wall ── */
+  var netb=box(16,24,36,'netbox');netb.style.transform='translate(666px,210px)';dk.appendChild(netb);
+  /* Blue screen on network box */
+  dk.appendChild(el('div',null,{position:'absolute',left:'666px',top:'210px',width:'16px',height:'6px',
+    background:'rgba(0,180,255,.8)',boxShadow:'0 0 10px rgba(0,180,255,.7)',transform:'translateZ(38px)'}));
+  /* ── TREES ── */
+  [[120,40],[120,480],[648,40],[648,480]].forEach(function(p){dk.appendChild(tree(p[0],p[1]));});
+})();
+
+/* ── RDC — Lobby + EMS room ── */
+(function(){
+  var dk=decks.rdc;
+  /* Glass entrance hall */
+  dk.appendChild(el('div','glass',{left:'140px',top:'120px',width:'200px',height:'160px'}));
+  /* Reception desk */
+  var desk=box(110,24,14);desk.style.transform='translate(190px,128px)';
+  desk.querySelector('.u-top').style.background='linear-gradient(150deg,#2a2e48,#1e2238)';
+  dk.appendChild(desk);
+  /* EMS control room (lit) */
+  var ems=box(90,70,20,'lit');ems.style.transform='translate(340px,100px)';
+  ems.querySelector('.u-top').style.background='linear-gradient(150deg,#0a1430,#060e22)';
+  ems.querySelector('.u-top').style.boxShadow='0 0 22px rgba(0,160,255,.55)';
+  dk.appendChild(ems);
+  /* Blue glow strips in EMS room */
+  [0,30,60].forEach(function(y){dk.appendChild(el('div',null,{position:'absolute',left:'350px',top:(110+y)+'px',width:'70px',height:'2px',background:'rgba(0,200,255,.7)',boxShadow:'0 0 8px rgba(0,200,255,.6)'}));});
+  /* Walls */
+  dk.appendChild(el('div','wall',{left:'300px',top:'30px',width:'4px',height:'100px'}));
+  dk.appendChild(el('div','wall',{left:'160px',top:'30px',width:'140px',height:'4px'}));
+  /* Lit cells — reception lighting */
+  for(var i=0;i<5;i++)dk.appendChild(el('div','litcell',{left:(60+i*72)+'px',top:'56px',width:'48px',height:'3px'}));
+})();
+
+/* ── R+1 — Compta & Fiscalité ── */
+(function(){
+  var dk=decks.r1;
+  dk.appendChild(el('div',null,{position:'absolute',left:'6px',top:'6px',right:'6px',bottom:'6px',border:'1px solid rgba(180,210,255,.1)',boxShadow:'inset 0 0 28px rgba(100,140,220,.08)',borderRadius:'2px'}));
+  /* Open space compta */
+  [[60,100],[100,100],[160,100],[200,100],[60,150],[100,150],[300,100],[340,100],[380,100]].forEach(function(p){
+    var t=box(24,14,5);t.style.transform='translate('+p[0]+'px,'+p[1]+'px)';
+    t.querySelector('.u-top').style.background='linear-gradient(150deg,#2a2e48,#1e2238)';dk.appendChild(t);
+  });
+  dk.appendChild(el('div','wall',{left:'260px',top:'30px',width:'4px',height:'220px'}));
+  /* Yellow accent cells — fiscal documents */
+  [40,120,200].forEach(function(y){dk.appendChild(el('div',null,{position:'absolute',left:'300px',top:y+'px',width:'140px',height:'3px',background:'rgba(255,200,0,.55)',boxShadow:'0 0 8px rgba(255,200,0,.4)'}));});
+  dk.appendChild(el('div',null,{position:'absolute',left:'6px',top:'6px',right:'6px',bottom:'6px',
+    borderBottom:'2px solid rgba(255,200,0,.2)'}));
+})();
+
+/* ── R+2 — RH & Direction ── */
+(function(){
+  var dk=decks.r2;
+  dk.appendChild(el('div',null,{position:'absolute',left:'6px',top:'6px',right:'6px',bottom:'6px',border:'1px solid rgba(200,160,255,.12)',boxShadow:'inset 0 0 28px rgba(150,100,220,.08)',borderRadius:'2px'}));
+  /* Meeting rooms */
+  var rm1=box(140,90,10);rm1.style.transform='translate(60px,50px)';
+  rm1.querySelector('.u-top').style.background='linear-gradient(150deg,#28244a,#1c1836)';dk.appendChild(rm1);
+  var rm2=box(100,80,10);rm2.style.transform='translate(300px,80px)';
+  rm2.querySelector('.u-top').style.background='linear-gradient(150deg,#241e44,#181430)';dk.appendChild(rm2);
+  /* Purple accent — RH */
+  [50,110,170].forEach(function(y){dk.appendChild(el('div',null,{position:'absolute',left:'30px',top:y+'px',width:'200px',height:'2px',background:'rgba(180,100,255,.5)',boxShadow:'0 0 8px rgba(180,100,255,.4)'}));});
+  dk.appendChild(el('div','wall',{left:'250px',top:'20px',width:'4px',height:'250px'}));
+  dk.appendChild(el('div','wall',{left:'180px',top:'160px',width:'80px',height:'4px'}));
+  /* Lit cells — direction */
+  for(var i=0;i<4;i++)dk.appendChild(el('div','litcell',{left:(300+i*40)+'px',top:'30px',width:'28px',height:'3px'}));
+})();
+
+/* ── TOITURE — Solar panels + HVAC ── */
+(function(){
+  var dk=decks.toit;
+  /* Main PV field */
+  var field=el('div','solar',{position:'absolute',width:'380px',height:'210px',left:'28px',top:'20px',transformStyle:'preserve-3d'});
+  var pnl=el('div','panel surf-solar',{position:'absolute',inset:'0'});field.appendChild(pnl);dk.appendChild(field);
+  /* Panel row separators */
+  [70,140].forEach(function(y){dk.appendChild(el('div',null,{position:'absolute',left:'28px',top:y+'px',width:'380px',height:'3px',background:'#060810'}));});
+  /* HVAC units */
+  [[420,30],[420,90],[420,150]].forEach(function(p){
+    var u=box(34,32,18,'lit');u.style.transform='translate('+p[0]+'px,'+p[1]+'px)';
+    u.querySelector('.u-top').style.background='linear-gradient(150deg,#3a3e52,#282c40)';
+    u.querySelector('.u-top').style.boxShadow='none';
+    dk.appendChild(u);
+  });
+  /* Skylights */
+  [[60,228],[160,228],[260,228]].forEach(function(p){dk.appendChild(el('div',null,{position:'absolute',left:p[0]+'px',top:p[1]+'px',width:'50px',height:'30px',background:'rgba(100,160,255,.22)',border:'1px solid rgba(100,160,255,.3)',boxShadow:'0 0 12px rgba(80,140,220,.25)'}));});
+})();
+
+/* ── Zone badges ── */
+var zoneBtns={}, tipTimer=null;
+var tipEl=document.getElementById('hZoneTip');
+var heroEl=document.getElementById('sHero');
+function showZoneTip(Z,btn){
+  clearTimeout(tipTimer);
+  var br=btn.getBoundingClientRect(), hr=heroEl.getBoundingClientRect();
+  tipEl.style.left=(br.left-hr.left+br.width/2)+'px';
+  tipEl.style.top=(br.top-hr.top)+'px';
+  document.getElementById('ztLbl').textContent=Z.label;
+  document.getElementById('ztTotal').textContent=Z.totalFmt+' €/an';
+  document.getElementById('ztTag').textContent=Z.tagline;
+  var ul=document.getElementById('ztList');ul.innerHTML='';
+  Z.items.forEach(function(t){var li=document.createElement('li');li.textContent=t;ul.appendChild(li);});
+  tipEl.classList.add('show');
+}
+function hideZoneTip(){tipEl.classList.remove('show');Object.values(zoneBtns).forEach(function(b){b.classList.remove('zactive');});}
+tipEl.addEventListener('mouseenter',function(){clearTimeout(tipTimer);});
+tipEl.addEventListener('mouseleave',function(){tipTimer=setTimeout(hideZoneTip,200);});
+ZONES.forEach(function(Z){
+  var dk=decks[Z.layer];
+  var zh=el('div','zone-hot '+(Z.zclass||''));zh.dataset.zone=Z.id;
+  zh.style.transform='translate('+Z.cx+'px,'+Z.cy+'px) translateZ('+Z.lift+'px)';
+  var pulse=el('div','zpulse');
+  var btn=el('button','zbtn');btn.innerHTML=Z.label+' <span class="zarr">→</span>';
+  zh.appendChild(pulse);zh.appendChild(btn);
+  dk.appendChild(zh);zoneBtns[Z.id]=btn;
+  btn.addEventListener('mouseenter',function(){
+    Object.values(zoneBtns).forEach(function(b){b.classList.remove('zactive');});
+    btn.classList.add('zactive');showZoneTip(Z,btn);
+    if(window.innerWidth>860&&!activeId)focusLayer(Z.layer,true);
+  });
+  btn.addEventListener('mouseleave',function(){
+    tipTimer=setTimeout(hideZoneTip,200);
+    if(window.innerWidth>860&&!activeId)focusLayer(null,false);
+  });
+  btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();openDetail(Z.id);});
+});
+
+/* ── Detail panel ── */
+var activeId=null;
+var detail=document.getElementById('hDetail'), scrim=document.getElementById('hScrim');
+function fillDetail(Z){
+  document.getElementById('hDposte').textContent=Z.zone;document.getElementById('hDtitle').textContent=Z.title;document.getElementById('hDdesc').textContent=Z.desc;
+  document.getElementById('hDbig').textContent=Z.big;document.getElementById('hDbigunit').textContent=Z.bigunit;document.getElementById('hDbigsub').textContent=Z.bigsub;
+  var mg=document.getElementById('hDmgrid');mg.innerHTML='';Z.metrics.forEach(function(m){var c=el('div','m');c.innerHTML='<div class="k">'+m[0]+'</div><div class="v'+(m[2]?' lum':'')+'">'+m[1]+'</div>';mg.appendChild(c);});
+  var bw=document.getElementById('hDbars');bw.innerHTML='';Z.bars.forEach(function(b){var r=el('div','bar');r.innerHTML='<div class="bl"><span>'+b[0]+'</span><b>'+b[1]+'%</b></div><div class="track"><div class="fill"></div></div>';bw.appendChild(r);setTimeout(function(){r.querySelector('.fill').style.width=b[1]+'%';},60);});
+}
+function openDetail(id){
+  var Z=ZONES.find(function(z){return z.id===id;});if(!Z)return;
+  activeId=id;fillDetail(Z);hideZoneTip();detail.classList.add('show');scrim.classList.add('show');
+  Object.keys(zoneBtns).forEach(function(k){zoneBtns[k].classList.toggle('zactive',k===id);});
+  if(window.innerWidth>860){Array.prototype.forEach.call(world.querySelectorAll('.layer'),function(l){l.classList.toggle('dim',l.dataset.layer!==Z.layer);});setActiveLegend(Z.layer);}
+}
+function closeDetail(){
+  activeId=null;detail.classList.remove('show');scrim.classList.remove('show');
+  Object.keys(zoneBtns).forEach(function(k){zoneBtns[k].classList.remove('zactive');});
+  Array.prototype.forEach.call(world.querySelectorAll('.layer'),function(l){l.classList.remove('dim');});setActiveLegend(null);
+}
+document.getElementById('hDclose').addEventListener('click',closeDetail);scrim.addEventListener('click',closeDetail);
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDetail();});
+
+/* ── Legend ── */
+var legendEl=document.getElementById('hLegend');
+LAYERS.slice().reverse().forEach(function(L){
+  var li=el('div','li');li.textContent=L.label;li.dataset.layer=L.id;
+  li.addEventListener('click',function(){var g=ZONES.filter(function(z){return z.layer===L.id;});if(g.length)openDetail(g[0].id);});
+  legendEl.appendChild(li);
+});
+function setActiveLegend(id){Array.prototype.forEach.call(legendEl.children,function(li){li.classList.toggle('active',li.dataset.layer===id);});}
+function focusLayer(id,on){
+  if(window.innerWidth<=860)return;
+  Array.prototype.forEach.call(world.querySelectorAll('.layer'),function(l){l.classList.toggle('dim',on&&id&&l.dataset.layer!==id);});
+  var cur=activeId?ZONES.find(function(z){return z.id===activeId;}):null;setActiveLegend(on?id:(cur?cur.layer:null));
+}
+
+/* ── Mobile list ── */
+var mlistEl=document.getElementById('hMlist');
+ZONES.forEach(function(Z){
+  var c=el('button','mcard');
+  c.innerHTML='<div class="mnum">'+Z.totalFmt+'<span class="mu">€/an</span></div><div class="mmid"><div class="mt">'+Z.title+'</div><div class="mp">'+Z.label+'</div></div><div class="marr">→</div>';
+  c.addEventListener('click',function(){openDetail(Z.id);});mlistEl.appendChild(c);
+});
+
+/* ── Controls ── */
+var explodeBtn=document.getElementById('hExplodeBtn'), rotateBtn=document.getElementById('hRotateBtn');
+var exploded=false, autoRotate=false;
+function setExplode(on){
+  exploded=on;world.classList.toggle('exploded',on);explodeBtn.classList.toggle('on',on);
+  if(!on&&activeId)closeDetail();
+}
+explodeBtn.addEventListener('click',function(){setExplode(!exploded);});
+rotateBtn.addEventListener('click',function(){autoRotate=!autoRotate;rotateBtn.classList.toggle('on',autoRotate);});
+
+/* ── Drag ── */
+var stage=document.getElementById('hStage'), rz=-40, baseRz=-40, dragging=false, lastX=0;
+function setRz(v){rz=v;world.style.setProperty('--rz',rz+'deg');}
+setRz(rz);
+stage.addEventListener('pointerdown',function(e){if(e.target.closest('.zbtn'))return;dragging=true;lastX=e.clientX;autoRotate=false;rotateBtn.classList.remove('on');stage.classList.add('dragging');try{stage.setPointerCapture(e.pointerId);}catch(_){}});
+stage.addEventListener('pointermove',function(e){if(!dragging)return;setRz(rz+(e.clientX-lastX)*0.28);lastX=e.clientX;});
+window.addEventListener('pointerup',function(){dragging=false;stage.classList.remove('dragging');});
+
+/* ── Auto-rotate ── */
+var sway=0;(function loop(){if(autoRotate&&!dragging){sway+=0.004;setRz(baseRz+Math.sin(sway)*26);}requestAnimationFrame(loop);})();
+
+/* ── Ticker ── */
+(function(){
+  var total=ZONES.reduce(function(s,z){return s+(z.saving||0);},0);
+  var elv=document.getElementById('hTickVal');
+  function fmt(n){return '≈ '+Math.round(n).toLocaleString('fr-FR')+' €';}
+  elv.textContent=fmt(total);
+  setTimeout(function(){elv.textContent='≈ 0 €';var steps=46,i=0,iv=setInterval(function(){i++;var e=1-Math.pow(1-i/steps,3);elv.textContent=fmt(total*e);if(i>=steps){elv.textContent=fmt(total);clearInterval(iv);}},32);},700);
+})();
+
+/* ══════════════════════════════════════════════════════════
+   ORCHESTRATION SVG
+══════════════════════════════════════════════════════════ */
+(function(){
+  var ns='http://www.w3.org/2000/svg';
+  function node(g,x,y,label,cls){
+    var w=Math.max(90,label.length*7.2+28),h=36;
+    var grp=document.createElementNS(ns,'g');grp.setAttribute('class','node '+(cls||''));
+    var r=document.createElementNS(ns,'rect');r.setAttribute('x',x-w/2);r.setAttribute('y',y-h/2);r.setAttribute('width',w);r.setAttribute('height',h);r.setAttribute('rx',8);
+    var t=document.createElementNS(ns,'text');t.setAttribute('x',x);t.setAttribute('y',y+5);t.setAttribute('text-anchor','middle');t.textContent=label;
+    grp.appendChild(r);grp.appendChild(t);g.appendChild(grp);return{x:x,y:y,w:w,h:h};
+  }
+  function path(g,d,cls){var p=document.createElementNS(ns,'path');p.setAttribute('d',d);p.setAttribute('class',cls);g.appendChild(p);return p;}
+  var cl=document.getElementById('oChaosLines'),cn=document.getElementById('oChaosNodes');
+  var you1={x:310,y:190};
+  var provs=[{l:'Installateur bornes',x:130,y:90},{l:'Énergéticien',x:540,y:110},{l:'Financeur / leasing',x:110,y:295},{l:'Mainteneur',x:550,y:275},{l:'Bureau d\'études',x:320,y:340}];
+  provs.forEach(function(p,i){var mx=(you1.x+p.x)/2+(i%2?70:-80),my=(you1.y+p.y)/2+(i%2?-55:70);path(cl,'M'+you1.x+','+you1.y+' Q'+mx+','+my+' '+p.x+','+p.y,'chaos-line');});
+  path(cl,'M'+provs[0].x+','+provs[0].y+' Q380,32 '+provs[1].x+','+provs[1].y,'chaos-line x');
+  path(cl,'M'+provs[2].x+','+provs[2].y+' Q390,364 '+provs[3].x+','+provs[3].y,'chaos-line x');
+  path(cl,'M'+provs[1].x+','+provs[1].y+' Q440,210 '+provs[3].x+','+provs[3].y,'chaos-line x');
+  provs.forEach(function(p){node(cn,p.x,p.y,p.l,'');});node(cn,you1.x,you1.y,'Votre entreprise','you');
+  var ol=document.getElementById('oOrderLines'),on=document.getElementById('oOrderNodes');
+  var you2={x:820,y:190},hub={x:1010,y:190};
+  path(ol,'M'+(you2.x+46)+','+you2.y+' H'+(hub.x-60),'trunk');path(ol,'M'+(you2.x+46)+','+you2.y+' H'+(hub.x-60),'flow');
+  var rp=[{l:'Installateur',y:68},{l:'Énergéticien',y:128},{l:'Financeur',y:188},{l:'Mainteneur',y:248},{l:'Bureau d\'études',y:312}];
+  rp.forEach(function(p){path(ol,'M'+(hub.x+60)+','+hub.y+' C'+(hub.x+140)+','+hub.y+' 1220,'+p.y+' 1270,'+p.y,'order-line');});
+  rp.forEach(function(p){node(on,1320,p.y,p.l,'');});node(on,you2.x,you2.y,'Votre entreprise','you');node(on,hub.x,hub.y,'OTONOM','hub');
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
+    var pl=document.createElementNS(ns,'circle');pl.setAttribute('class','pulse-dot');pl.setAttribute('r','3.2');ol.appendChild(pl);
+    var x0=you2.x+46,x1=hub.x-60,dur=2200,t0=null;
+    (function step(t){if(!t0)t0=t;var p=((t-t0)%dur)/dur;pl.setAttribute('cx',x0+(x1-x0)*p);pl.setAttribute('cy',you2.y);requestAnimationFrame(step);})(0);
+  }
+})();
+
+/* ══════════════════════════════════════════════════════════
+   FAQ DATA + BUILD
+══════════════════════════════════════════════════════════ */
+var FAQ_DATA = [
+  { q:"Qu'est-ce qu'OTONOM exactement ?",
+    a:"OTONOM est un orchestrateur de la transition énergie-mobilité pour les entreprises. Nous coordonnons tous vos prestataires — installateurs, énergéticiens, financeurs, mainteneurs — et vous représentons comme interlocuteur unique, du diagnostic initial au suivi en exploitation." },
+  { q:"OTONOM installe-t-il les bornes ou les panneaux ?",
+    a:"Non. Nous sélectionnons et mandatons des prestataires certifiés — mais c'est eux qui installent. Votre avantage : un seul contrat, une seule responsabilité, un seul bilan. Vous n'avez pas à coordonner plusieurs corps d'état." },
+  { q:"Combien coûte le diagnostic initial ?",
+    a:"Le diagnostic initial est entièrement gratuit et sans engagement. Il comprend l'analyse de vos consommations énergétiques, de votre flotte de véhicules et de votre site. À l'issue, vous recevez un plan d'action chiffré avec ROI et aides captables." },
+  { q:"Quelles aides financières peut-on capter ?",
+    a:"Selon votre situation : CEE (Certificats d'Économies d'Énergie), ADVENIR (aide à la recharge de véhicules électriques), exonération de TVS pour les VE, abattement AEN de 70% sur la base de calcul, tiers-investisseur pour le solaire. On identifie et gère l'ensemble du dossier pour vous." },
+  { q:"En combien de temps voit-on les premiers résultats ?",
+    a:"Les premières économies (pilotage de la recharge, optimisation tarifaire, effacement de pointes) peuvent être visibles dès le premier mois après mise en service. Les projets d'installation (solaire, PAC) suivent un planning coordonné — typiquement 3 à 12 mois selon l'ampleur du site." },
+  { q:"OTONOM est-il lié à un fournisseur ou une technologie ?",
+    a:"Non. Nous sommes indépendants de tout fabricant, installateur ou énergéticien. Nous sélectionnons les prestataires et technologies les mieux adaptés à chaque site, sans exclusivité commerciale." }
+];
+(function(){
+  var list=document.getElementById('faqList');
+  FAQ_DATA.forEach(function(f){
+    var item=el('div','faq-item');
+    var q=el('button','faq-q');q.setAttribute('aria-expanded','false');
+    q.innerHTML='<span>'+f.q+'</span><span class="icon"><svg viewBox="0 0 10 10" stroke-width="1.4"><line x1="5" y1="1" x2="5" y2="9"/><line x1="1" y1="5" x2="9" y2="5"/></svg></span>';
+    var a=el('div','faq-a');a.innerHTML='<div class="faq-a-inner">'+f.a+'</div>';
+    item.appendChild(q);item.appendChild(a);list.appendChild(item);
+    q.addEventListener('click',function(){
+      var open=item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');});
+      if(!open){item.classList.add('open');q.setAttribute('aria-expanded','true');}
+    });
+  });
+  /* JSON-LD */
+  document.getElementById('faqJsonLd').textContent=JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":FAQ_DATA.map(function(f){return{"@type":"Question","name":f.q,"acceptedAnswer":{"@type":"Answer","text":f.a}};})});
+})();
+
+/* ══════════════════════════════════════════════════════════
+   SCROLL ANIMATIONS + COUNT-UP
+══════════════════════════════════════════════════════════ */
+(function(){
+  function countUp(el){
+    var target=parseFloat(el.dataset.target)||0,pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=pre+target+suf;return;}
+    var dur=1200,t0=null;
+    (function step(t){if(!t0)t0=t;var p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,3);el.textContent=pre+Math.round(target*e)+suf;if(p<1)requestAnimationFrame(step);})(0);
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(!entry.isIntersecting)return;
+      entry.target.classList.add('in');
+      /* count-up within the revealed element */
+      entry.target.querySelectorAll('.count-up:not(.counted)').forEach(function(c){c.classList.add('counted');countUp(c);});
+      /* also fire count-up if this IS a count-up target */
+      if(entry.target.classList.contains('count-up')&&!entry.target.classList.contains('counted')){entry.target.classList.add('counted');countUp(entry.target);}
+      io.unobserve(entry.target);
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  /* separately observe proof cells for count-up */
+  document.querySelectorAll('.proof-cell').forEach(function(el){io.observe(el);});
+})();
+
+/* ══════════════════════════════════════════════════════════
+   HEADER + MOBILE NAV
+══════════════════════════════════════════════════════════ */
+(function(){
+  var burger=document.getElementById('burgerBtn'), nav=document.getElementById('mobileNav'), open=false;
+  burger.addEventListener('click',function(){open=!open;nav.classList.toggle('open',open);});
+  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){open=false;nav.classList.remove('open');});});
+  /* smooth anchor scroll */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var id=a.getAttribute('href').slice(1);var target=document.getElementById(id);
+      if(!target)return;e.preventDefault();target.scrollIntoView({behavior:'smooth'});
+    });
+  });
+})();
+
+})(); // end IIFE
+</script>
+</body>
+</html>

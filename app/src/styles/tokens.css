@@ -1,0 +1,46 @@
+/* ============================================================
+   OTONOM — Design tokens
+   Monochrome premium · noir profond · blanc lumineux · mono cockpit
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@300;400;500;600;700&family=Hanken+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+
+:root{
+  /* — Ink scale (backgrounds) — */
+  --ink-900:#08080a;
+  --ink-850:#0d0d0f;
+  --ink-800:#121214;
+  --ink-750:#17171a;
+  --ink-700:#1d1d21;
+  --ink-650:#26262b;
+
+  /* — Foreground (near-white, faintly cool) — */
+  --fg:        #f3f4f6;
+  --fg-soft:   rgba(243,244,246,0.74);
+  --fg-dim:    rgba(243,244,246,0.50);
+  --fg-faint:  rgba(243,244,246,0.30);
+  --fg-ghost:  rgba(243,244,246,0.14);
+
+  /* — Lines / hairlines — */
+  --line:        rgba(243,244,246,0.085);
+  --line-2:      rgba(243,244,246,0.14);
+  --line-strong: rgba(243,244,246,0.24);
+
+  /* — Luminous white: CTAs & key data only — */
+  --lum:        #ffffff;
+  --lum-glow:   0 0 0 1px rgba(255,255,255,0.9), 0 0 28px rgba(255,255,255,0.18);
+
+  /* — Type families — */
+  --font-display: 'Saira Condensed', 'Arial Narrow', sans-serif;
+  --font-text:    'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* — Spacing rhythm — */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+
+  /* — Radii — */
+  --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:18px;
+
+  --grain:0.45;
+  --maxw:1280px;
+}
