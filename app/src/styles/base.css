@@ -150,10 +150,11 @@ em{ font-style:normal; }
 
 /* =================== ZONE CARD (shared) =================== */
 .zcard{
-  background:linear-gradient(180deg, rgba(20,21,25,0.92), rgba(11,11,14,0.94));
-  backdrop-filter:blur(18px);
+  background:linear-gradient(180deg, rgba(18,19,23,0.97), rgba(10,10,13,0.98));
+  backdrop-filter:blur(20px);
   border:1px solid var(--line-2); border-radius:var(--r-lg);
-  padding:16px 18px 18px; box-shadow:0 24px 60px rgba(0,0,0,0.5);
+  padding:16px 18px 18px;
+  box-shadow:0 30px 70px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
 }
 .zcard__k{
   font-family:var(--font-mono); font-size:10px; letter-spacing:0.2em;
