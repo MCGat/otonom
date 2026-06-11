@@ -20,6 +20,13 @@ em{ font-style:normal; }
   text-transform:uppercase; color:var(--fg-dim); margin:0 0 var(--sp-4);
 }
 
+/* ---- capture mode: clean canvas only (mobile cinematic pre-render) ---- */
+body.is-capture .hero__ui,
+body.is-capture .hotspots,
+body.is-capture .grain,
+body.is-capture #sections{ display:none !important; }
+body.is-capture .hero::after{ display:none; }
+
 /* ---- grain overlay ---- */
 .grain{
   position:fixed; inset:0; z-index:60; pointer-events:none;

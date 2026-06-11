@@ -33,7 +33,7 @@ const TIER = {
   low:  { dpr: 1.5, shadow: 1024, gtao: false, bloom: 0.26, smaa: false },
 };
 
-export function initScene({ stage, hotspotsEl }) {
+export function initScene({ stage, hotspotsEl, capture = false }) {
   let W = stage.clientWidth || 1440;
   let H = stage.clientHeight || 760;
   const isMobile = matchMedia('(pointer:coarse)').matches || window.innerWidth < 768;
@@ -177,6 +177,33 @@ export function initScene({ stage, hotspotsEl }) {
   const INTRO_MS = 6500;
   function stopIntro() { introActive = false; controls.autoRotate = false; }
   controls.addEventListener('start', () => { stopIntro(); fly = null; });
+
+  // ---- deterministic capture (pre-rendered mobile cinematic) ----
+  // progress 0→1 drives a tasteful camera sweep + the explode reveal.
+  function setProgress(p) {
+    p = Math.max(0, Math.min(1, p));
+    const az = THREE.MathUtils.degToRad(-30 + p * 60);     // -30°..+30° sweep
+    const radius = 72 - p * 8;
+    const y = 18 + Math.sin(p * Math.PI) * 7;              // gentle vertical arc
+    const tx = 0, ty = 5, tz = 2;
+    camera.position.set(Math.sin(az) * radius + tx, y, Math.cos(az) * radius + tz);
+    controls.target.set(tx, ty, tz);
+    camera.lookAt(tx, ty, tz);
+    explodeT = Math.max(0, Math.min(1, (p - 0.42) / 0.46)); // ramp 0.42→0.88
+    applyExplode();
+    camera.updateMatrixWorld();
+    renderer.shadowMap.needsUpdate = true;
+    hotspots.update(W, H);
+    composer.render();
+  }
+
+  if (capture) {
+    introActive = false;
+    controls.autoRotate = false;
+    controls.enabled = false;
+    setProgress(0);
+    return { renderer, scene, camera, controls, setProgress, toggleExplode, setExploded, flyToAnchor, anchors, isMobile, hotspots, tier, invalidate };
+  }
 
   const clock = new THREE.Clock();
   const t0 = performance.now();
