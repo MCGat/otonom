@@ -53,17 +53,19 @@ export function initScene({ stage, hotspotsEl, capture = false }) {
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x0c0d11, 78, 210);
 
-  const camera = new THREE.PerspectiveCamera(38, W / H, 0.1, 1000);
-  camera.position.set(40, 19, 56);
+  const camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 1000);
+  camera.position.set(21, 7.5, 40);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 4, 12);
+  // low, front angle: fleet + chargers gain foreground presence on the
+  // right, building rises behind; lower-left stays clear for the copy.
+  controls.target.set(-5, 3, 9);
   controls.enableDamping = true;
   controls.dampingFactor = 0.07;
   controls.minDistance = 26;
   controls.maxDistance = 95;
   controls.maxPolarAngle = Math.PI * 0.49;
-  controls.autoRotate = true;
+  controls.autoRotate = false;
   controls.autoRotateSpeed = 0.45;
 
   // ---- studio environment ----
@@ -172,8 +174,8 @@ export function initScene({ stage, hotspotsEl, capture = false }) {
   }
   window.addEventListener('resize', resize);
 
-  // stop the intro spin on first interaction
-  let introActive = true;
+  // locked hero framing (no auto-spin); intro disabled
+  let introActive = false;
   const INTRO_MS = 6500;
   function stopIntro() { introActive = false; controls.autoRotate = false; }
   controls.addEventListener('start', () => { stopIntro(); fly = null; });

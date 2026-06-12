@@ -82,12 +82,15 @@ export function createForecourt(M) {
   // RIGHT: fleet depot — DC chargers + truck + van  (priorité)
   // =========================================================
   const fleet = new THREE.Group();
-  fleet.position.set(10, 0, 15);
+  fleet.position.set(8.5, 0, 13);
   const chargers = new THREE.Group();
-  [-2.2, 0, 2.2].forEach((x) => { const c = fleetCharger(M); c.position.set(x, 0, 0); chargers.add(c); });
+  [-5.4, -1.8, 1.8, 5.4].forEach((x) => { const c = fleetCharger(M); c.position.set(x, 0, 0); chargers.add(c); });
   fleet.add(chargers);
-  const tr = truck(M); tr.position.set(0, 0, 6.5); tr.rotation.y = Math.PI; fleet.add(tr);
-  const vn = van(M); vn.position.set(4.5, 0, 4.2); vn.rotation.y = Math.PI; fleet.add(vn);
+  // a real depot row: two trucks + two vans nosed in at the DC chargers
+  const tr  = truck(M); tr.position.set(-5.0, 0, 6.6);  tr.rotation.y = Math.PI; fleet.add(tr);
+  const tr2 = truck(M); tr2.position.set(5.0, 0, 6.8);  tr2.rotation.y = Math.PI; fleet.add(tr2);
+  const vn  = van(M);   vn.position.set(-1.6, 0, 4.4);  vn.rotation.y = Math.PI; fleet.add(vn);
+  const vn2 = van(M);   vn2.position.set(1.8, 0, 4.4);  vn2.rotation.y = Math.PI; fleet.add(vn2);
   group.add(fleet);
 
   const fleetChargers = new THREE.Object3D();
@@ -114,8 +117,8 @@ export function createForecourt(M) {
   const beam = box(11, 0.3, 7, M.steelDark); beam.position.y = -0.25; canopy.add(beam);
   canopy.position.set(0, 4.3, 0); canopy.rotation.x = -0.12; carport.add(canopy);
   // cars + AC chargers under it
-  const carColors = [0x3a3d44, 0x9aa0a8, 0x2a2c31];
-  [-3.4, 0, 3.4].forEach((x, i) => {
+  const carColors = [0x3a3d44, 0x9aa0a8, 0x2a2c31, 0x44484f, 0xb7bcc4];
+  [-4.6, -2.3, 0, 2.3, 4.6].forEach((x, i) => {
     const c = car(M, carColors[i]); c.position.set(x, 0, 0.5); carport.add(c);
     const ch = acCharger(M); ch.position.set(x, 0, -2.6); carport.add(ch);
   });
