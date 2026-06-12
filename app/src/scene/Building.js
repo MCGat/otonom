@@ -116,6 +116,23 @@ function emsCabinet(M) {
   return grp;
 }
 
+// Supervision / control room — visible behind the RDC glass: operator
+// desk, three screens and a video wall, all softly glowing.
+function controlRoom(M) {
+  const grp = new THREE.Group();
+  const scrMat = () => new THREE.MeshStandardMaterial({ color: 0x0a0c12, emissive: 0x9fb8e6, emissiveIntensity: 1.1, roughness: 0.4 });
+  const desk = box(4.0, 0.9, 1.1, M.steelDark); desk.position.set(0, 0.45, 0); grp.add(desk);
+  const top = box(4.2, 0.08, 1.3, M.steel); top.position.set(0, 0.92, 0); grp.add(top);
+  for (let i = 0; i < 3; i++) {
+    const s = new THREE.Mesh(new THREE.PlaneGeometry(0.95, 0.6), scrMat());
+    s.position.set(-1.3 + i * 1.3, 1.42, 0.1); s.rotation.x = -0.12; grp.add(s);
+  }
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 1.6), scrMat());
+  wall.position.set(0, 2.3, -0.9); grp.add(wall);
+  const pl = new THREE.PointLight(0x9fb8e6, 7, 13, 2); pl.position.set(0, 2.0, 0.8); grp.add(pl);
+  return grp;
+}
+
 export function createBuilding(M) {
   const group = new THREE.Group();
 
@@ -141,14 +158,17 @@ export function createBuilding(M) {
     floors.push(f);
   }
 
-  // EMS core lives in the RDC (floor 0)
+  // EMS cabinet (the "brain") + visible supervision room, both in the RDC
   const ems = emsCabinet(M);
-  ems.position.set(-6.5, SLAB, 3.5);
+  ems.position.set(-7.5, SLAB, 3.2);
   floors[0].add(ems);
+  const ctrl = controlRoom(M);
+  ctrl.position.set(2.5, SLAB, 4.9);
+  floors[0].add(ctrl);
 
-  // anchor marker for the EMS hotspot (follows the RDC floor when exploded)
+  // anchor marker for the EMS/supervision hotspot (follows RDC on explode)
   const emsCore = new THREE.Object3D();
-  emsCore.position.set(-6.5, 1.4, 4.2);
+  emsCore.position.set(2.5, 1.6, 5.8);
   floors[0].add(emsCore);
 
   // ---- roof (its own group, lifts highest on explode) ----

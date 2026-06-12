@@ -63,6 +63,34 @@ function acCharger(M) {
   return g;
 }
 
+// ---- high-power truck charger (MCS) : cabinet + mast + overhead arm ----
+function mcsCharger(M) {
+  const g = new THREE.Group();
+  const cab = box(1.7, 2.6, 1.2, M.steel); cab.position.y = 1.3; g.add(cab);
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 1.2),
+    new THREE.MeshStandardMaterial({ color: 0x0a0c12, emissive: 0x8fb0ff, emissiveIntensity: 1.0, roughness: 0.4 }));
+  screen.position.set(0, 1.6, 0.62); g.add(screen);
+  const mast = box(0.42, 4.6, 0.42, M.steelDark); mast.position.set(0, 2.3, -0.2); g.add(mast);
+  const arm = box(0.36, 0.36, 3.4, M.steelDark); arm.position.set(0, 4.3, 1.5); g.add(arm);
+  const head = box(1.3, 0.4, 0.9, M.steel); head.position.set(0, 3.95, 3.0); g.add(head);
+  return g;
+}
+
+// ---- technical room : inverter cabinets + TGBT + transformer on a pad ----
+function inverterBank(M) {
+  const g = new THREE.Group();
+  const pad = box(6.4, 0.18, 2.6, M.podium); pad.position.y = 0.09; g.add(pad);
+  for (let i = 0; i < 4; i++) {
+    const c = box(0.95, 1.8, 0.7, M.steel); c.position.set(-2.55 + i * 1.5, 0.99, 0); g.add(c);
+    const grille = box(0.72, 1.2, 0.02, M.steelDark); grille.position.set(-2.55 + i * 1.5, 1.0, 0.37); g.add(grille);
+  }
+  const tgbt = box(1.7, 1.7, 1.4, M.steelDark); tgbt.position.set(2.6, 0.85, 0); g.add(tgbt);
+  const led = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.25),
+    new THREE.MeshStandardMaterial({ color: 0x0a0c12, emissive: 0xbfeacb, emissiveIntensity: 0.8 }));
+  led.position.set(2.6, 1.2, 0.71); g.add(led);
+  return g;
+}
+
 export function createForecourt(M) {
   const group = new THREE.Group();
 
@@ -162,6 +190,30 @@ export function createForecourt(M) {
   group.add(gridBox);
 
   // =========================================================
+  // High-power truck charging (MCS) — dedicated PL lane (far right)
+  // =========================================================
+  const plBay = new THREE.Group();
+  plBay.position.set(17, 0, 16);
+  plBay.add(mcsCharger(M));
+  const plTruck = truck(M); plTruck.position.set(0, 0, 5.6); plTruck.rotation.y = Math.PI; plBay.add(plTruck);
+  group.add(plBay);
+
+  const plCharge = new THREE.Object3D();
+  plCharge.position.set(17, 3.6, 16);
+  group.add(plCharge);
+
+  // =========================================================
+  // Technical room — inverters · TGBT · transformer (right, near BESS)
+  // =========================================================
+  const techGrp = inverterBank(M);
+  techGrp.position.set(16, 0, 5);
+  group.add(techGrp);
+
+  const localTech = new THREE.Object3D();
+  localTech.position.set(16, 1.6, 5);
+  group.add(localTech);
+
+  // =========================================================
   // trees (low-poly) for life
   // =========================================================
   const trunkMat = new THREE.MeshStandardMaterial({ color: 0x2a241d, roughness: 1 });
@@ -176,6 +228,6 @@ export function createForecourt(M) {
 
   return {
     group,
-    anchors: { fleetChargers, carport: carportAnchor, bess, gridBox },
+    anchors: { fleetChargers, carport: carportAnchor, bess, gridBox, plCharge, localTech },
   };
 }
