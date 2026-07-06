@@ -1,0 +1,63 @@
+name: Deploy to PlanetHoster
+
+# Déclenché à chaque push sur main. Build l'app Vite (app/) puis
+# synchronise app/dist/ vers public_html en FTP.
+on:
+  push:
+    branches: [main]
+  # Permet aussi de lancer le déploiement à la main depuis l'onglet Actions
+  workflow_dispatch:
+
+# Un seul déploiement à la fois : si tu pushes 2 fois d'affilée, le
+# déploiement en cours est annulé et remplacé par le plus récent.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: app
+        # puppeteer n'est utile que pour les scripts de rendu (shot*.mjs),
+        # pas pour le build : on évite de télécharger Chromium.
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: "true"
+        run: npm ci
+
+      - name: Build
+        working-directory: app
+        run: npm run build
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Le contenu buildé (JAMAIS le / final oublié : ça envoie le
+          # CONTENU du dossier, pas le dossier lui-même)
+          local-dir: app/dist/
+          # Cible sur le serveur PlanetHoster. Adapte si ton site vit
+          # dans un sous-dossier (ex: public_html/otonom/).
+          server-dir: public_html/
+          # Protocole : ftps = FTP chiffré (recommandé, supporté par
+          # PlanetHoster). Mets "ftp" si le TLS pose problème.
+          protocol: ftps
+          # Miroir complet : les fichiers présents sur le serveur mais
+          # absents du build sont SUPPRIMÉS. public_html reflète donc
+          # exactement app/dist/ à chaque déploiement.
+          # (L'action garde un état sur le serveur pour n'uploader que
+          # les fichiers modifiés — c'est ton "force push" mais efficace.)
+          dangerous-clean-slate: false
